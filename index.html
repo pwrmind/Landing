@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html lang="ru" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Психолог-коуч для IT-специалистов | КПТ + 15 лет опыта в IT</title>
+    <meta name="description" content="Ваш личный системный администратор для психики. Ежедневная поддержка, КПТ и контроль привычек от психолога с 15-летним опытом в IT.">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            DEFAULT: '#2563eb',
+                            dark: '#60a5fa',
+                        },
+                        secondary: {
+                            DEFAULT: '#10b981',
+                            dark: '#34d399',
+                        },
+                        cta: {
+                            DEFAULT: '#f97316',
+                            dark: '#fb923c',
+                        },
+                        background: {
+                            light: '#f8fafc',
+                            dark: '#0f172a',
+                        },
+                        card: {
+                            light: '#ffffff',
+                            dark: '#1e293b',
+                        }
+                    },
+                    fontFamily: {
+                        'sans': ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Alpine.js -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-page: #f8fafc;
+            --bg-card: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --primary: #2563eb;
+            --secondary: #10b981;
+            --cta: #f97316;
+            --border: #e2e8f0;
+        }
+
+        .dark {
+            --bg-page: #0f172a;
+            --bg-card: #1e293b;
+            --text-main: #f1f5f9;
+            --text-muted: #94a3b8;
+            --primary: #60a5fa;
+            --secondary: #34d399;
+            --cta: #fb923c;
+            --border: #334155;
+        }
+
+        body {
+            background-color: var(--bg-page);
+            color: var(--text-main);
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .gradient-text {
+            background: linear-gradient(90deg, var(--primary) 0%, var(--secondary) 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .feature-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            background-color: rgba(37, 99, 235, 0.1);
+            color: var(--primary);
+        }
+
+        .dark .feature-icon {
+            background-color: rgba(96, 165, 250, 0.2);
+        }
+
+        .btn-primary {
+            background-color: var(--cta);
+            color: #ffffff;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: filter 0.3s ease, transform 0.2s ease;
+        }
+
+        .btn-primary:hover {
+            filter: brightness(1.1);
+            transform: translateY(-2px);
+        }
+
+        .section-title {
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-title:after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 60px;
+            height: 4px;
+            background-color: var(--secondary);
+            border-radius: 2px;
+        }
+
+        .kpi-card {
+            border-left: 4px solid var(--secondary);
+        }
+
+        .tooltip {
+            position: relative;
+        }
+
+        .tooltip:hover:after {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 0.5rem 1rem;
+            background-color: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 0.875rem;
+            white-space: nowrap;
+            z-index: 10;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body x-data="{ darkMode: false, menuOpen: false, formSubmitted: false, formData: { problem: '' } }" :class="{ 'dark': darkMode }" class="font-sans">
+    <!-- Header -->
+    <header class="sticky top-0 z-50 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border-b border-gray-200 dark:border-gray-800">
+        <div class="container mx-auto px-4 py-4">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center space-x-2">
+                    <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-primary to-secondary flex items-center justify-center">
+                        <i class="fas fa-brain text-white text-xl"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-xl font-bold">IT.MindSupport</h1>
+                        <p class="text-xs text-gray-500 dark:text-gray-400">Психолог-коуч для IT</p>
+                    </div>
+                </div>
+                
+                <div class="flex items-center space-x-4">
+                    <nav class="hidden md:flex space-x-8">
+                        <a href="#problems" class="font-medium hover:text-primary transition">Проблемы</a>
+                        <a href="#solution" class="font-medium hover:text-primary transition">Решение</a>
+                        <a href="#how" class="font-medium hover:text-primary transition">Как работает</a>
+                        <a href="#kpi" class="font-medium hover:text-primary transition">KPI</a>
+                        <a href="#contact" class="font-medium hover:text-primary transition">Контакты</a>
+                    </nav>
+                    
+                    <button @click="darkMode = !darkMode" class="p-2 rounded-lg bg-gray-100 dark:bg-gray-800">
+                        <i x-show="!darkMode" class="fas fa-moon text-gray-700"></i>
+                        <i x-show="darkMode" class="fas fa-sun text-yellow-400"></i>
+                    </button>
+                    
+                    <button @click="menuOpen = !menuOpen" class="md:hidden p-2">
+                        <i class="fas fa-bars text-xl"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Mobile Menu -->
+            <div x-show="menuOpen" x-transition class="md:hidden mt-4 pb-4 border-t border-gray-200 dark:border-gray-800 pt-4">
+                <div class="flex flex-col space-y-4">
+                    <a href="#problems" @click="menuOpen = false" class="font-medium hover:text-primary transition">Проблемы</a>
+                    <a href="#solution" @click="menuOpen = false" class="font-medium hover:text-primary transition">Решение</a>
+                    <a href="#how" @click="menuOpen = false" class="font-medium hover:text-primary transition">Как работает</a>
+                    <a href="#kpi" @click="menuOpen = false" class="font-medium hover:text-primary transition">KPI</a>
+                    <a href="#contact" @click="menuOpen = false" class="font-medium hover:text-primary transition">Контакты</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="py-16 md:py-24">
+        <div class="container mx-auto px-4">
+            <div class="max-w-4xl mx-auto text-center">
+                <span class="inline-block px-4 py-2 rounded-full bg-primary/10 text-primary font-semibold text-sm mb-6">
+                    <i class="fas fa-code mr-2"></i>Для IT-специалистов
+                </span>
+                
+                <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
+                    <span class="gradient-text">Выгораешь? Прокрастинируешь?</span><br>
+                    Знакомый сценарий.
+                </h1>
+                
+                <h2 class="text-2xl md:text-3xl text-gray-600 dark:text-gray-300 mb-8 font-medium">
+                    Я проведу тебя сквозь него — с <span class="font-bold text-primary">кодом доступа</span> к твоей продуктивности.
+                </h2>
+                
+                <p class="text-xl text-gray-700 dark:text-gray-300 mb-10 max-w-3xl mx-auto">
+                    Персональный психолог-коуч с <span class="font-bold text-secondary">15-летним опытом в IT</span>. Не раз в неделю, а <span class="font-bold underline">ежедневно на связи</span>. КПТ, арт-терапия и полный контроль над привычками для инженеров, разработчиков и IT-менеджеров.
+                </p>
+                
+                <div class="flex flex-col sm:flex-row gap-4 justify-center mb-12">
+                    <a href="#contact" class="btn-primary inline-flex items-center justify-center py-4 px-8 text-lg">
+                        <i class="fas fa-rocket mr-3"></i> Начать действовать
+                    </a>
+                    <a href="#how" class="py-4 px-8 border-2 border-primary text-primary dark:text-primary-dark font-semibold rounded-lg inline-flex items-center justify-center hover:bg-primary/5 transition">
+                        <i class="fas fa-play-circle mr-3"></i> Как это работает
+                    </a>
+                </div>
+                
+                <div class="flex flex-wrap justify-center gap-6 text-gray-600 dark:text-gray-400">
+                    <div class="flex items-center">
+                        <i class="fas fa-check-circle text-secondary mr-2"></i>
+                        <span>Ежедневный контроль в течение дня</span>
+                    </div>
+                    <div class="flex items-center">
+                        <i class="fas fa-check-circle text-secondary mr-2"></i>
+                        <span>КПТ-техники "по ходу пьесы"</span>
+                    </div>
+                    <div class="flex items-center">
+                        <i class="fas fa-check-circle text-secondary mr-2"></i>
+                        <span>Бонусы за достижение целей</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Problems Section -->
+    <section id="problems" class="py-16 bg-gray-50 dark:bg-gray-900/50">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="section-title text-3xl md:text-4xl font-bold mb-4">Вы это узнали?</h2>
+                <p class="text-gray-600 dark:text-gray-400 text-lg max-w-2xl mx-auto">
+                    Знакомые паттерны поведения, которые тормозят карьеру и снижают качество жизни
+                </p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="card p-6 hover:shadow-lg transition">
+                    <div class="feature-icon mb-4">
+                        <i class="fas fa-scroll"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">«Сижу в соцсетях/YouTube, хотя дедлайн горит»</h3>
+                    <p class="text-gray-600 dark:text-gray-400">Прокрастинация как способ справиться с тревогой от сложных задач.</p>
+                </div>
+                
+                <div class="card p-6 hover:shadow-lg transition">
+                    <div class="feature-icon mb-4">
+                        <i class="fas fa-wine-glass"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">«Вечером — бокал вина "для релакса"»</h3>
+                    <p class="text-gray-600 dark:text-gray-400">Хотя знаешь, что это уже система, а не просто привычка.</p>
+                </div>
+                
+                <div class="card p-6 hover:shadow-lg transition">
+                    <div class="feature-icon mb-4">
+                        <i class="fas fa-fire"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">«Понедельник: всё планирую. Вторник: всё выгораю»</h3>
+                    <p class="text-gray-600 dark:text-gray-400">Цикл надежд и разочарований в собственной продуктивности.</p>
+                </div>
+                
+                <div class="card p-6 hover:shadow-lg transition">
+                    <div class="feature-icon mb-4">
+                        <i class="fas fa-dumbbell"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">«Спортзал? С понедельника»</h3>
+                    <p class="text-gray-600 dark:text-gray-400">Осознанное питание? Завтра. А сегодня — доширак в 2 часа ночи.</p>
+                </div>
+                
+                <div class="card p-6 hover:shadow-lg transition">
+                    <div class="feature-icon mb-4">
+                        <i class="fas fa-battery-quarter"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">«Задачи есть, а энергии и фокуса — нет»</h3>
+                    <p class="text-gray-600 dark:text-gray-400">Ментальная усталость, которая не проходит даже после выходных.</p>
+                </div>
+                
+                <div class="card p-6 hover:shadow-lg transition lg:col-span-3 lg:max-w-2xl lg:mx-auto">
+                    <div class="text-center">
+                        <h3 class="text-2xl font-bold mb-4">Если это про вас, значит, ваш мозг требует не «переустановки ОС», а <span class="text-primary">точечных ежедневных патчей</span></h3>
+                        <p class="text-gray-600 dark:text-gray-400 text-lg">
+                            И грамотного «дебаггинга» поведения. Я предлагаю именно это.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Solution Section -->
+    <section id="solution" class="py-16">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="section-title text-3xl md:text-4xl font-bold mb-4">Системный администратор для вашей психики</h2>
+                <p class="text-gray-600 dark:text-gray-400 text-lg max-w-2xl mx-auto">
+                    Я — не «удаленный психолог на сессию». Я ваш <span class="font-bold text-primary">ежедневный со-фаундер</span> в проекте под названием «Ваша Эффективность и Баланс».
+                </p>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-8 mb-16">
+                <div class="card p-8 text-center">
+                    <div class="text-5xl text-primary mb-6">
+                        <i class="fas fa-laptop-code"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4">Основной стек</h3>
+                    <p class="text-gray-600 dark:text-gray-400 mb-4">
+                        <span class="font-bold text-primary">Когнитивно-поведенческая терапия (КПТ)</span> — для моментальной работы с триггерами прокрастинации и выгорания прямо в течение дня.
+                    </p>
+                </div>
+                
+                <div class="card p-8 text-center">
+                    <div class="text-5xl text-secondary mb-6">
+                        <i class="fas fa-layer-group"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4">Дополнительный стек</h3>
+                    <p class="text-gray-600 dark:text-gray-400 mb-4">
+                        <span class="font-bold text-secondary">Методы коучинга</span> для постановки целей и <span class="font-bold text-secondary">арт-терапия</span> для невербальной разгрузки — когда слова уже не работают.
+                    </p>
+                </div>
+                
+                <div class="card p-8 text-center">
+                    <div class="text-5xl text-cta mb-6">
+                        <i class="fas fa-user-tie"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4">Главное преимущество</h3>
+                    <p class="text-gray-600 dark:text-gray-400 mb-4">
+                        <span class="font-bold text-cta">15 лет я работал в IT-сфере.</span> Я говорю на вашем языке, понимаю ваш контекст, давление дедлайнов, Agile-циклы и культуру удаленки.
+                    </p>
+                </div>
+            </div>
+            
+            <div class="card p-8 max-w-4xl mx-auto">
+                <div class="flex items-start">
+                    <div class="hidden md:block mr-6">
+                        <div class="w-24 h-24 rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center">
+                            <i class="fas fa-quote-left text-white text-3xl"></i>
+                        </div>
+                    </div>
+                    <div>
+                        <h3 class="text-2xl font-bold mb-4">Я не буду спрашивать «как ваши отношения с мамой», когда у вас «горит продакшен»</h3>
+                        <p class="text-gray-600 dark:text-gray-400 text-lg">
+                            Вместо этого мы разберем конкретные ситуации: почему сегодня вы залипли на YouTube вместо работы над кодом, 
+                            что именно вызвало желание «расслабиться» с бокалом вина, и как перестроить расписание, чтобы находить время на спорт.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section id="how" class="py-16 bg-gray-50 dark:bg-gray-900/50">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="section-title text-3xl md:text-4xl font-bold mb-4">Как работает система поддержки?</h2>
+                <p class="text-gray-600 dark:text-gray-400 text-lg max-w-2xl mx-auto">
+                    Мы строим работу как agile-спринт на месяц с ежедневными стендапами и непрерывной поддержкой
+                </p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+                <div class="card p-6">
+                    <div class="text-4xl text-primary mb-4">
+                        <i class="fas fa-comments"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Daily Stand-up</h3>
+                    <p class="text-gray-600 dark:text-gray-400">Утром (15-30 мин) — планируем день, вечером — ретроспектива. Определяем приоритеты, чтобы энергия шла на главное.</p>
+                </div>
+                
+                <div class="card p-6">
+                    <div class="text-4xl text-secondary mb-4">
+                        <i class="fas fa-mobile-alt"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Continuous Support</h3>
+                    <p class="text-gray-600 dark:text-gray-400">Я на связи в мессенджере в течение вашего рабочего дня. Столкнулись с триггером — пишем. Отрабатываем технику КПТ «по ходу пьесы».</p>
+                </div>
+                
+                <div class="card p-6">
+                    <div class="text-4xl text-cta mb-4">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Мониторинг состояния</h3>
+                    <p class="text-gray-600 dark:text-gray-400">Помогаю отслеживать настроение и уровень выгорания, чтобы вовремя вносить коррективы в план дня.</p>
+                </div>
+                
+                <div class="card p-6">
+                    <div class="text-4xl text-primary mb-4">
+                        <i class="fas fa-bug"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Работа с «багами»</h3>
+                    <p class="text-gray-600 dark:text-gray-400">Нецелевое поведение — это не повод для самобичевания, а сигнал для анализа. Разбираем его как инцидент, находим root cause и «патчим».</p>
+                </div>
+            </div>
+            
+            <div class="max-w-4xl mx-auto">
+                <div class="card p-8">
+                    <h3 class="text-2xl font-bold mb-6 text-center">Пример типичного дня с поддержкой</h3>
+                    <div class="space-y-6">
+                        <div class="flex items-start">
+                            <div class="bg-primary/10 text-primary rounded-full w-10 h-10 flex items-center justify-center mr-4 flex-shrink-0">
+                                9:00
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-lg mb-1">Утренний план-колл (15 мин)</h4>
+                                <p class="text-gray-600 dark:text-gray-400">Определяем 3 главные задачи на день, расставляем приоритеты, планируем перерывы.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start">
+                            <div class="bg-secondary/10 text-secondary rounded-full w-10 h-10 flex items-center justify-center mr-4 flex-shrink-0">
+                                11:30
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-lg mb-1">Триггер: потянуло в YouTube</h4>
+                                <p class="text-gray-600 dark:text-gray-400">Вы пишете мне в чат. Мы проводим 5-минутную КПТ-технику «остановка мысли» и «переоценка триггера».</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start">
+                            <div class="bg-cta/10 text-cta rounded-full w-10 h-10 flex items-center justify-center mr-4 flex-shrink-0">
+                                19:00
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-lg mb-1">Вечерний разбор (20 мин)</h4>
+                                <p class="text-gray-600 dark:text-gray-400">Анализируем день, отмечаем успехи, работаем со сложными моментами, планируем вечер для восстановления.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- KPI Section -->
+    <section id="kpi" class="py-16">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="section-title text-3xl md:text-4xl font-bold mb-4">Бонусная система KPI</h2>
+                <p class="text-gray-600 dark:text-gray-400 text-lg max-w-2xl mx-auto">
+                    Как в лучших стартапах: ваша мотивация — ваши изменения. Моя задача — помочь вам их достичь.
+                </p>
+            </div>
+            
+            <div class="max-w-4xl mx-auto mb-12">
+                <div class="card p-8">
+                    <div class="text-center mb-8">
+                        <div class="inline-flex items-center justify-center p-4 bg-primary/10 rounded-full mb-4">
+                            <i class="fas fa-trophy text-4xl text-primary"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold mb-2">Прозрачная система мотивации</h3>
+                        <p class="text-gray-600 dark:text-gray-400">
+                            Базовый "оклад" поддержки + бонусы за достижение <span class="font-bold">ваших же целей</span>
+                        </p>
+                    </div>
+                    
+                    <div class="grid md:grid-cols-3 gap-6 mb-8">
+                        <div class="kpi-card p-6">
+                            <div class="flex items-center mb-4">
+                                <div class="w-12 h-12 rounded-lg bg-green-100 dark:bg-green-900/30 flex items-center justify-center mr-4">
+                                    <i class="fas fa-weight text-secondary text-xl"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg">Здоровье</h4>
+                                    <p class="text-2xl font-bold text-secondary">+5 000 ₽</p>
+                                </div>
+                            </div>
+                            <p class="text-gray-600 dark:text-gray-400 text-sm">за прогресс в здоровье (например, снижение веса по плану)</p>
+                        </div>
+                        
+                        <div class="kpi-card p-6">
+                            <div class="flex items-center mb-4">
+                                <div class="w-12 h-12 rounded-lg bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center mr-4">
+                                    <i class="fas fa-clock text-primary text-xl"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg">Фокус</h4>
+                                    <p class="text-2xl font-bold text-primary">+5 000 ₽</p>
+                                </div>
+                            </div>
+                            <p class="text-gray-600 dark:text-gray-400 text-sm">за контроль над цифровым временем (<1 часа в YouTube/соцсетях в день)</p>
+                        </div>
+                        
+                        <div class="kpi-card p-6">
+                            <div class="flex items-center mb-4">
+                                <div class="w-12 h-12 rounded-lg bg-orange-100 dark:bg-orange-900/30 flex items-center justify-center mr-4">
+                                    <i class="fas fa-battery-full text-cta text-xl"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg">Устойчивость</h4>
+                                    <p class="text-2xl font-bold text-cta">+5 000 ₽</p>
+                                </div>
+                            </div>
+                            <p class="text-gray-600 dark:text-gray-400 text-sm">за отсутствие выгорания (≤2 эпизодов выгорания в месяц)</p>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-gradient-to-r from-primary/10 to-secondary/10 rounded-xl p-6 text-center">
+                        <h4 class="text-xl font-bold mb-2">Максимальный результат = максимальная сумма</h4>
+                        <div class="text-3xl font-bold gradient-text">20 000 ₽ + до 15 000 ₽ бонусов = 35 000 ₽</div>
+                        <p class="text-gray-600 dark:text-gray-400 mt-2">Прозрачно, по-деловому, и только за реальные результаты</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="max-w-3xl mx-auto">
+                <div class="card p-8">
+                    <h3 class="text-2xl font-bold mb-6 text-center">Почему я? (Вместо сопроводительного письма)</h3>
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div class="flex items-start">
+                            <div class="text-primary mr-4 mt-1">
+                                <i class="fas fa-check-circle text-xl"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-lg mb-2">Глубокое понимание контекста</h4>
+                                <p class="text-gray-600 dark:text-gray-400">15 лет в IT. Я знаю вашу среду изнутри, а не по книгам.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start">
+                            <div class="text-primary mr-4 mt-1">
+                                <i class="fas fa-check-circle text-xl"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-lg mb-2">Конкретные инструменты</h4>
+                                <p class="text-gray-600 dark:text-gray-400">Работаю доказательными методами (КПТ), а не абстрактными разговорами.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start">
+                            <div class="text-primary mr-4 mt-1">
+                                <i class="fas fa-check-circle text-xl"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-lg mb-2">Фокус на действии</h4>
+                                <p class="text-gray-600 dark:text-gray-400">Я буду настойчивым в рамках договоренности, потому что вы платите за результат.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start">
+                            <div class="text-primary mr-4 mt-1">
+                                <i class="fas fa-check-circle text-xl"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-lg mb-2">Формат — это решение</h4>
+                                <p class="text-gray-600 dark:text-gray-400">Вам нужен активный участник ваших ежедневных процессов. Именно это я и предлагаю.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section id="contact" class="py-16 bg-gradient-to-br from-primary/5 to-secondary/5">
+        <div class="container mx-auto px-4">
+            <div class="max-w-3xl mx-auto">
+                <div class="card p-8 md:p-12">
+                    <div class="text-center mb-8">
+                        <h2 class="text-3xl md:text-4xl font-bold mb-4">Готов действовать, а не просто говорить?</h2>
+                        <p class="text-gray-600 dark:text-gray-400 text-lg">
+                            Ваш запрос — «грамотный эффективный саппорт». Мой ответ — система ежедневного контроля и точечной терапии, созданная бывшим IT-шником для IT-шников.
+                        </p>
+                    </div>
+                    
+                    <div x-show="!formSubmitted" class="space-y-6">
+                        <div class="text-center mb-6">
+                            <div class="inline-flex items-center justify-center p-3 bg-cta/10 rounded-full mb-4">
+                                <i class="fas fa-question-circle text-2xl text-cta"></i>
+                            </div>
+                            <h3 class="text-2xl font-bold mb-2">Напишите мне, и в первом же сообщении ответьте на вопрос:</h3>
+                            <p class="text-xl text-primary font-semibold">
+                                «Какой один «баг» в вашем ежедневном поведении сильнее всего тормозит ваш прогресс прямо сейчас?»
+                            </p>
+                            <p class="text-gray-600 dark:text-gray-400 mt-4">
+                                Это будет наша первая точка входа для дебаггинга.
+                            </p>
+                        </div>
+                        
+                        <div class="space-y-4">
+                            <div>
+                                <label for="problem" class="block font-medium mb-2">Ваш ответ на вопрос выше *</label>
+                                <textarea 
+                                    x-model="formData.problem" 
+                                    id="problem" 
+                                    rows="4" 
+                                    class="w-full p-4 border border-gray-300 dark:border-gray-700 rounded-lg bg-transparent focus:ring-2 focus:ring-primary focus:border-transparent"
+                                    placeholder="Опишите ваш главный «баг»..."></textarea>
+                            </div>
+                            
+                            <div class="grid md:grid-cols-2 gap-4">
+                                <div>
+                                    <label for="name" class="block font-medium mb-2">Ваше имя</label>
+                                    <input 
+                                        type="text" 
+                                        id="name" 
+                                        class="w-full p-4 border border-gray-300 dark:border-gray-700 rounded-lg bg-transparent focus:ring-2 focus:ring-primary focus:border-transparent"
+                                        placeholder="Иван">
+                                </div>
+                                
+                                <div>
+                                    <label for="contact" class="block font-medium mb-2">Telegram или Email *</label>
+                                    <input 
+                                        type="text" 
+                                        id="contact" 
+                                        class="w-full p-4 border border-gray-300 dark:border-gray-700 rounded-lg bg-transparent focus:ring-2 focus:ring-primary focus:border-transparent"
+                                        placeholder="@username или email@example.com" required>
+                                </div>
+                            </div>
+                            
+                            <div class="pt-4">
+                                <button 
+                                    @click="formSubmitted = true" 
+                                    class="btn-primary w-full py-4 text-lg font-bold flex items-center justify-center">
+                                    <i class="fas fa-paper-plane mr-3"></i> Отправить вопрос и жду ответа
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="text-center text-sm text-gray-500 dark:text-gray-400 pt-4 border-t border-gray-200 dark:border-gray-800">
+                            <p>
+                                <i class="fas fa-info-circle mr-2"></i> 
+                                <span class="font-medium">Важное уточнение:</span> Это предложение о комплексной ежемесячной программе сопровождения. 
+                                Оплата за разовую сессию не предполагается, так как не соответствует поставленной задаче ежедневного контроля и поддержки.
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <!-- Success Message -->
+                    <div x-show="formSubmitted" x-transition class="text-center py-12">
+                        <div class="inline-flex items-center justify-center w-20 h-20 rounded-full bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400 mb-6">
+                            <i class="fas fa-check text-3xl"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold mb-4">Отлично! Сообщение отправлено.</h3>
+                        <p class="text-gray-600 dark:text-gray-400 text-lg mb-6">
+                            Я свяжусь с вами в течение 24 часов в указанный мессенджер или по email. 
+                            В первом сообщении мы обсудим ваш «баг» и наметим план действий.
+                        </p>
+                        <button 
+                            @click="formSubmitted = false; formData.problem = ''" 
+                            class="text-primary font-semibold hover:underline">
+                            <i class="fas fa-arrow-left mr-2"></i> Отправить еще одно сообщение
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-8 border-t border-gray-200 dark:border-gray-800">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-6 md:mb-0">
+                    <div class="flex items-center space-x-2">
+                        <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-primary to-secondary flex items-center justify-center">
+                            <i class="fas fa-brain text-white"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-bold">IT.MindSupport</h3>
+                            <p class="text-xs text-gray-500 dark:text-gray-400">Психолог-коуч для IT-специалистов</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="text-center md:text-right">
+                    <p class="text-gray-600 dark:text-gray-400 text-sm">
+                        <i class="fas fa-code mr-1"></i> Создано специально для IT-специалистов
+                    </p>
+                    <p class="text-gray-500 dark:text-gray-500 text-xs mt-2">
+                        КПТ + арт-терапия + 15 лет опыта в IT
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Initialize Alpine.js data
+        document.addEventListener('alpine:init', () => {
+            // Можно добавить дополнительную логику при необходимости
+        });
+        
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
