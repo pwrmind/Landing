@@ -33,6 +33,10 @@
   "areaServed": "Worldwide",
   "availableLanguage": ["ru"],
   "serviceType": "Когнитивно-поведенческая терапия",
+  "memberOf": {
+    "@type": "Organization",
+    "name": "Ассоциация когнитивно-поведенческой психотерапии (АКПП)"
+  },
   "knowsAbout": [
     "Когнитивно-поведенческая терапия",
     "Когнитивно-поведенческий коучинг",
@@ -222,7 +226,6 @@ p{margin:0 0 16px;color:var(--token-text);}
   color:var(--token-text);
 }
 
-/* Строка терминала: мягкое появление */
 .tl{
   display:block;
   white-space:pre-wrap;
@@ -231,16 +234,8 @@ p{margin:0 0 16px;color:var(--token-text);}
   animation: lineAppear 260ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 @keyframes lineAppear{
-  from{
-    opacity:0;
-    transform: translateY(-2px);
-    filter: blur(2px);
-  }
-  to{
-    opacity:1;
-    transform: translateY(0);
-    filter: blur(0);
-  }
+  from{opacity:0;transform: translateY(-2px);filter: blur(2px);}
+  to{opacity:1;transform: translateY(0);filter: blur(0);}
 }
 
 .tl.welcome{color:var(--token-comment);}
@@ -447,7 +442,6 @@ class MindDebugger {
         </a>
       </div>
 
-      <!-- ═══ Termux-style split terminal (4 sessions) ═══ -->
       <div class="termux-wrap" aria-hidden="true">
         <div class="termux-bar">
           <div class="termux-bar-left">
@@ -591,8 +585,11 @@ class MindDebugger {
           <button type="button" class="cert-tab-btn" :class="{ 'active': activeCert === 'ippip-diploma' }" @click="activeCert = 'ippip-diploma'">
             <i class="fas fa-graduation-cap"></i> Диплом ИППиП
           </button>
+          <button type="button" class="cert-tab-btn" :class="{ 'active': activeCert === 'akpp' }" @click="activeCert = 'akpp'">
+            <i class="fas fa-certificate"></i> Членство АКПП
+          </button>
           <button type="button" class="cert-tab-btn" :class="{ 'active': activeCert === 'ippip-course' }" @click="activeCert = 'ippip-course'">
-            <i class="fas fa-certificate"></i> Сертификат ИППиП
+            <i class="fas fa-users"></i> Сертификат ИППиП
           </button>
           <button type="button" class="cert-tab-btn" :class="{ 'active': activeCert === 'erickson' }" @click="activeCert = 'erickson'">
             <i class="fas fa-globe"></i> Erickson Int.
@@ -621,6 +618,24 @@ class MindDebugger {
           </div>
         </div>
 
+        <div class="cert-pane" x-show="activeCert === 'akpp'" x-cloak>
+          <div class="cert-meta">
+            <h3>Официальное членство <span class="tag">MEMBERSHIP</span></h3>
+            <table class="cert-meta-table">
+              <tr><td>Ассоциация</td><td>Ассоциация когнитивно-поведенческой психотерапии (АКПП)</td></tr>
+              <tr><td>ФИО</td><td>Бабанов Алексей Александрович</td></tr>
+              <tr><td>Статус</td><td>Действительный член ассоциации</td></tr>
+              <tr><td>Дата вступления</td><td>29 сентября 2026 года</td></tr>
+              <tr><td>Президент</td><td>Д. В. Ковпак</td></tr>
+              <tr><td>Город</td><td>Санкт-Петербург</td></tr>
+              <tr><td>Проверка</td><td class="status-ok">[ ACTIVE_MEMBER ]</td></tr>
+            </table>
+          </div>
+          <div class="cert-preview" @click="openCert('/assets/images/cert5.png', 'Членство в Ассоциации когнитивно-поведенческой психотерапии')">
+            <img src="/assets/images/cert5.png" alt="Членство АКПП" loading="lazy">
+          </div>
+        </div>
+
         <div class="cert-pane" x-show="activeCert === 'ippip-course'" x-cloak>
           <div class="cert-meta">
             <h3>Повышение квалификации <span class="tag">CERTIFICATE</span></h3>
@@ -637,6 +652,8 @@ class MindDebugger {
             <img src="/assets/images/cert2.png" alt="Сертификат ИППиП" loading="lazy">
           </div>
         </div>
+
+
 
         <div class="cert-pane" x-show="activeCert === 'erickson'" x-cloak>
           <div class="cert-meta">
@@ -847,12 +864,10 @@ class MindDebugger {
 <script>
 function landingEngine() {
   return {
-    /* ── UID generator ── */
     __uid: 0,
     nextId() { return ++this.__uid; },
     mkLine(obj) { return Object.assign({ id: this.nextId() }, obj); },
 
-    /* ── Termux panes ── */
     panes: [
       {
         label: 'identity',
@@ -940,21 +955,17 @@ function landingEngine() {
     async runPane(paneIndex) {
       const pane = this.panes[paneIndex];
 
-      // Reset
       this.panes[paneIndex].lines = [];
       await this.sleep(200);
 
-      // Стабильный id для строки команды — animation сработает 1 раз
       const cmdId = this.nextId();
       let typed = '';
 
-      // Первое появление prompt
       this.panes[paneIndex].lines = [
         { id: cmdId, cls: 'cmd', prompt: '~ $', text: '', cursor: true }
       ];
       await this.sleep(140);
 
-      // Посимвольный ввод: обновляем текст, но id стабилен
       for (const ch of pane.cmd) {
         typed += ch;
         this.panes[paneIndex].lines = [
@@ -963,13 +974,11 @@ function landingEngine() {
         await this.sleep(22 + Math.random() * 24);
       }
 
-      // Убираем курсор, сохраняем текст
       this.panes[paneIndex].lines = [
         { id: cmdId, cls: 'cmd', prompt: '~ $', text: typed, cursor: false }
       ];
       await this.sleep(320);
 
-      // Вывод — каждая строка с новым id, animation срабатывает
       for (const o of pane.out) {
         this.panes[paneIndex].lines = [
           ...this.panes[paneIndex].lines,
@@ -978,7 +987,6 @@ function landingEngine() {
         await this.sleep(170);
       }
 
-      // Финальный prompt
       this.panes[paneIndex].lines = [
         ...this.panes[paneIndex].lines,
         this.mkLine({ cls: 'cmd', prompt: '~ $', text: '', cursor: true })
