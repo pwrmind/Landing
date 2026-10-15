@@ -177,7 +177,7 @@ p{margin:0 0 16px;color:var(--token-text);}
   background:#0B0D12;
   display:flex;
   flex-direction:column;
-  min-height:200px;
+  min-height:210px;
   position:relative;
 }
 .termux-pane-head{
@@ -221,7 +221,28 @@ p{margin:0 0 16px;color:var(--token-text);}
   overflow:hidden;
   color:var(--token-text);
 }
-.tl{display:block;white-space:pre-wrap;word-break:break-word;min-height:1.5em;}
+
+/* Строка терминала: мягкое появление */
+.tl{
+  display:block;
+  white-space:pre-wrap;
+  word-break:break-word;
+  min-height:1.5em;
+  animation: lineAppear 260ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+@keyframes lineAppear{
+  from{
+    opacity:0;
+    transform: translateY(-2px);
+    filter: blur(2px);
+  }
+  to{
+    opacity:1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
+
 .tl.welcome{color:var(--token-comment);}
 .tl.err{color:var(--token-error);}
 .tl.warn{color:var(--token-keyword);}
@@ -371,6 +392,7 @@ form{display:flex;flex-direction:column;gap:18px;}
   .card:hover{transform:none;}
   .btn:hover{transform:none;}
   .cursor{animation:none;}
+  .tl{animation:none;}
   section.snap{min-height:auto;display:block;}
 }
 </style>
@@ -448,10 +470,10 @@ class MindDebugger {
                   <span class="num" x-text="'[' + (pi + 1) + ']'"></span>
                   <span x-text="pane.label"></span>
                 </div>
-                <div class="termux-pane-title" x-text="pane.cmdShort"></div>
+                <div class="termux-pane-title" x-text="'~ ' + pane.cmdShort"></div>
               </div>
               <div class="termux-pane-body">
-                <template x-for="(line, li) in pane.lines" :key="li">
+                <template x-for="line in pane.lines" :key="line.id">
                   <div class="tl" :class="line.cls"><span class="prompt" x-show="line.prompt" x-text="line.prompt"></span><span class="txt" x-text="line.text"></span><span class="cursor" x-show="line.cursor"></span></div>
                 </template>
               </div>
@@ -533,7 +555,7 @@ class MindDebugger {
       <div class="profile-layout">
         <div class="photo-wrap">
           <div class="photo-frame">
-            <img src="/assets/images/alexey.jpg" alt="Алексей Бабанов — психолог-консультант" loading="lazy">
+            <img src="/assets/images/photo-tall.png" alt="Алексей Бабанов — психолог-консультант" loading="lazy">
           </div>
           <div class="photo-philosophy">
             <p>
@@ -594,8 +616,8 @@ class MindDebugger {
               <tr><td>Статус</td><td class="status-ok">[ VERIFIED_OK ]</td></tr>
             </table>
           </div>
-          <div class="cert-preview" @click="openCert('/assets/images/cert-ippip-diploma.jpg', 'Диплом о профессиональной переподготовке')">
-            <img src="/assets/images/cert-ippip-diploma.jpg" alt="Диплом ИППиП" loading="lazy">
+          <div class="cert-preview" @click="openCert('/assets/images/cert1.png', 'Диплом о профессиональной переподготовке')">
+            <img src="/assets/images/cert1.png" alt="Диплом ИППиП" loading="lazy">
           </div>
         </div>
 
@@ -611,8 +633,8 @@ class MindDebugger {
               <tr><td>Статус</td><td class="status-ok">[ COMPLETED ]</td></tr>
             </table>
           </div>
-          <div class="cert-preview" @click="openCert('/assets/images/cert-ippip-course.jpg', 'Сертификат ИППиП — Психологическое консультирование')">
-            <img src="/assets/images/cert-ippip-course.jpg" alt="Сертификат ИППиП" loading="lazy">
+          <div class="cert-preview" @click="openCert('/assets/images/cert2.png', 'Сертификат ИППиП — Психологическое консультирование')">
+            <img src="/assets/images/cert2.png" alt="Сертификат ИППиП" loading="lazy">
           </div>
         </div>
 
@@ -627,8 +649,8 @@ class MindDebugger {
               <tr><td>Проверка</td><td class="status-ok">[ VERIFIED ]</td></tr>
             </table>
           </div>
-          <div class="cert-preview" @click="openCert('/assets/images/cert-erickson.jpg', 'Erickson Coaching International')">
-            <img src="/assets/images/cert-erickson.jpg" alt="Сертификат Erickson" loading="lazy">
+          <div class="cert-preview" @click="openCert('/assets/images/cert3.png', 'Erickson Coaching International')">
+            <img src="/assets/images/cert3.png" alt="Сертификат Erickson" loading="lazy">
           </div>
         </div>
 
@@ -644,8 +666,8 @@ class MindDebugger {
               <tr><td>Статус</td><td class="status-ok">[ COMPLETED ]</td></tr>
             </table>
           </div>
-          <div class="cert-preview" @click="openCert('/assets/images/cert-psychodemia.jpg', 'Сертификат Psychodemia')">
-            <img src="/assets/images/cert-psychodemia.jpg" alt="Сертификат Psychodemia" loading="lazy">
+          <div class="cert-preview" @click="openCert('/assets/images/cert4.png', 'Сертификат Psychodemia')">
+            <img src="/assets/images/cert4.png" alt="Сертификат Psychodemia" loading="lazy">
           </div>
         </div>
       </div>
@@ -825,11 +847,16 @@ class MindDebugger {
 <script>
 function landingEngine() {
   return {
+    /* ── UID generator ── */
+    __uid: 0,
+    nextId() { return ++this.__uid; },
+    mkLine(obj) { return Object.assign({ id: this.nextId() }, obj); },
+
     /* ── Termux panes ── */
     panes: [
       {
         label: 'identity',
-        cmdShort: '~ whoami',
+        cmdShort: 'whoami',
         cmd: 'whoami',
         out: [
           { cls: '', text: 'alexey.babanov' },
@@ -840,7 +867,7 @@ function landingEngine() {
       },
       {
         label: 'manifest',
-        cmdShort: '~ cat manifest.txt',
+        cmdShort: 'cat manifest.txt',
         cmd: 'cat manifest.txt',
         out: [
           { cls: '', text: 'без давления. без обещаний.' },
@@ -851,7 +878,7 @@ function landingEngine() {
       },
       {
         label: 'diagnostics',
-        cmdShort: '~ .sh --status',
+        cmdShort: 'diagnostics --status',
         cmd: './cognitive_refactoring.sh --status',
         out: [
           { cls: 'err',  text: 'error:   energy_level = 14% [CRIT]' },
@@ -864,7 +891,7 @@ function landingEngine() {
       },
       {
         label: 'resolution',
-        cmdShort: '~ .sh --run',
+        cmdShort: 'diagnostics --run',
         cmd: './cognitive_refactoring.sh --run',
         out: [
           { cls: 'ok', text: 'success: active_session ready' },
@@ -896,11 +923,10 @@ function landingEngine() {
 
       const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       if (reduced) {
-        // Static render: all panes fully filled
         this.panes.forEach((pane, i) => {
           const lines = [
-            { cls: 'cmd', prompt: '~ $', text: pane.cmd },
-            ...pane.out
+            this.mkLine({ cls: 'cmd', prompt: '~ $', text: pane.cmd }),
+            ...pane.out.map(o => this.mkLine(o))
           ];
           this.panes[i].lines = lines;
         });
@@ -913,34 +939,49 @@ function landingEngine() {
 
     async runPane(paneIndex) {
       const pane = this.panes[paneIndex];
-      // reset
+
+      // Reset
       this.panes[paneIndex].lines = [];
       await this.sleep(200);
 
-      // command line with typing
-      const cmdLine = { cls: 'cmd', prompt: '~ $', text: '', cursor: true };
-      this.panes[paneIndex].lines = [cmdLine];
-      await this.sleep(120);
+      // Стабильный id для строки команды — animation сработает 1 раз
+      const cmdId = this.nextId();
+      let typed = '';
 
+      // Первое появление prompt
+      this.panes[paneIndex].lines = [
+        { id: cmdId, cls: 'cmd', prompt: '~ $', text: '', cursor: true }
+      ];
+      await this.sleep(140);
+
+      // Посимвольный ввод: обновляем текст, но id стабилен
       for (const ch of pane.cmd) {
-        cmdLine.text += ch;
-        this.panes[paneIndex].lines = [...this.panes[paneIndex].lines];
-        await this.sleep(20 + Math.random() * 25);
+        typed += ch;
+        this.panes[paneIndex].lines = [
+          { id: cmdId, cls: 'cmd', prompt: '~ $', text: typed, cursor: true }
+        ];
+        await this.sleep(22 + Math.random() * 24);
       }
-      cmdLine.cursor = false;
-      this.panes[paneIndex].lines = [...this.panes[paneIndex].lines];
-      await this.sleep(240);
 
-      // output
+      // Убираем курсор, сохраняем текст
+      this.panes[paneIndex].lines = [
+        { id: cmdId, cls: 'cmd', prompt: '~ $', text: typed, cursor: false }
+      ];
+      await this.sleep(320);
+
+      // Вывод — каждая строка с новым id, animation срабатывает
       for (const o of pane.out) {
-        this.panes[paneIndex].lines = [...this.panes[paneIndex].lines, o];
-        await this.sleep(120);
+        this.panes[paneIndex].lines = [
+          ...this.panes[paneIndex].lines,
+          this.mkLine(o)
+        ];
+        await this.sleep(170);
       }
 
-      // final prompt
+      // Финальный prompt
       this.panes[paneIndex].lines = [
         ...this.panes[paneIndex].lines,
-        { cls: 'cmd', prompt: '~ $', text: '', cursor: true }
+        this.mkLine({ cls: 'cmd', prompt: '~ $', text: '', cursor: true })
       ];
     },
 
