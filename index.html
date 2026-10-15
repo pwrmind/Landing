@@ -126,56 +126,114 @@ p{margin:0 0 16px;color:var(--token-text);}
 .btn i{font-size:.9em;}
 .btn-block{width:100%;justify-content:center;}
 
-/* ─── Terminal (bash-style) ─── */
-.terminal{
+/* ─── Termux-style split terminal ─── */
+.termux-wrap{
   margin-top:34px;
-  background:#14161A;
+  max-width:1000px;
+  background:#0A0C10;
   border:1px solid var(--ide-border);
-  border-radius:10px;
+  border-radius:12px;
   overflow:hidden;
+  box-shadow:0 12px 44px rgba(0,0,0,.5), inset 0 1px 0 rgba(255,255,255,.02);
   font-family:var(--font-mono);
-  max-width:840px;
-  box-shadow:0 8px 30px rgba(0,0,0,.35);
 }
-.terminal-head{
+.termux-bar{
   display:flex;align-items:center;justify-content:space-between;
-  padding:10px 16px;
+  padding:9px 14px;
   background:var(--ide-panel);
   border-bottom:1px solid var(--ide-border);
-  font-size:.74rem;color:var(--token-comment);
+  font-size:.72rem;color:var(--token-comment);
+  gap:14px;
 }
-.terminal-tabs{display:flex;gap:18px;}
-.terminal-tab-active{color:var(--token-keyword);position:relative;}
-.terminal-tab-active::after{content:'';position:absolute;left:0;right:0;bottom:-11px;height:1px;background:var(--token-keyword);}
-.terminal-dots{display:flex;gap:6px;}
-.terminal-dots span{width:9px;height:9px;border-radius:50%;background:var(--ide-border);}
+.termux-bar-left{display:flex;align-items:center;gap:10px;}
+.termux-bar-left i{color:var(--token-keyword);font-size:.78rem;}
+.termux-bar-left .title{color:var(--token-text);font-weight:500;}
+.termux-bar-left .dim{color:var(--token-comment);}
+.termux-bar-right{display:flex;align-items:center;gap:12px;}
+.termux-badge{
+  font-size:.68rem;
+  color:var(--token-string);
+  border:1px solid rgba(106,135,89,.25);
+  background:rgba(106,135,89,.08);
+  padding:2px 8px;border-radius:4px;
+  letter-spacing:.05em;
+}
+.termux-dots{display:flex;gap:6px;}
+.termux-dots span{width:8px;height:8px;border-radius:50%;background:var(--ide-border);}
 
-.terminal-body{
-  padding:16px 20px 20px;
-  font-size:.85rem;
-  line-height:1.65;
+.termux-grid{
+  display:grid;
+  grid-template-columns:1fr;
+  gap:1px;
+  background:var(--ide-border);
+}
+@media (min-width:820px){
+  .termux-grid{
+    grid-template-columns:1fr 1fr;
+  }
+}
+
+.termux-pane{
+  background:#0B0D12;
+  display:flex;
+  flex-direction:column;
+  min-height:200px;
+  position:relative;
+}
+.termux-pane-head{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:7px 12px;
+  background:#14161B;
+  border-bottom:1px solid var(--ide-border);
+  font-size:.7rem;
+  color:var(--token-comment);
+  gap:10px;
+}
+.termux-session{
+  display:flex;align-items:center;gap:8px;
+  font-weight:500;
   color:var(--token-text);
-  height:250px;
-  overflow-y:auto;
-  scrollbar-width:thin;
-  scrollbar-color:var(--ide-border) transparent;
+  white-space:nowrap;
 }
-.terminal-body::-webkit-scrollbar{width:6px;}
-.terminal-body::-webkit-scrollbar-track{background:transparent;}
-.terminal-body::-webkit-scrollbar-thumb{background:var(--ide-border);border-radius:3px;}
-
-.tl{white-space:pre-wrap;word-break:break-word;min-height:1.4em;}
-.tl .prompt{color:var(--token-dracula);margin-right:8px;user-select:none;font-weight:500;}
+.termux-session .dot{
+  width:7px;height:7px;border-radius:50%;
+  background:var(--token-string);
+  box-shadow:0 0 6px rgba(106,135,89,.55);
+  flex-shrink:0;
+}
+.termux-session .num{
+  color:var(--token-comment);
+  font-weight:400;
+}
+.termux-pane-title{
+  color:var(--token-comment);
+  font-size:.68rem;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+  min-width:0;
+}
+.termux-pane-body{
+  padding:10px 14px 12px;
+  font-size:.76rem;
+  line-height:1.55;
+  flex-grow:1;
+  overflow:hidden;
+  color:var(--token-text);
+}
+.tl{display:block;white-space:pre-wrap;word-break:break-word;min-height:1.5em;}
 .tl.welcome{color:var(--token-comment);}
 .tl.err{color:var(--token-error);}
 .tl.warn{color:var(--token-keyword);}
 .tl.ok{color:var(--token-string);}
 .tl.cmd{color:#E2E8F0;}
-
+.tl.cmt{color:var(--token-comment);}
+.tl .prompt{color:var(--token-dracula);font-weight:500;user-select:none;margin-right:6px;}
+.tl .txt{color:inherit;}
 .cursor{
-  display:inline-block;width:8px;height:14px;
-  background:var(--token-text);vertical-align:-2px;margin-left:2px;
-  animation:blink 1s steps(2,start) infinite;
+  display:inline-block;width:.5em;height:.95em;
+  background:var(--token-text);vertical-align:-.12em;margin-left:1px;
+  animation:blink 1.05s steps(2,start) infinite;
 }
 @keyframes blink{to{visibility:hidden;}}
 
@@ -314,7 +372,6 @@ form{display:flex;flex-direction:column;gap:18px;}
   .btn:hover{transform:none;}
   .cursor{animation:none;}
   section.snap{min-height:auto;display:block;}
-  .terminal-body{overflow-y:auto;}
 }
 </style>
 </head>
@@ -368,20 +425,36 @@ class MindDebugger {
         </a>
       </div>
 
-      <!-- ═══ Terminal (bash-стиль) ═══ -->
-      <div class="terminal" aria-hidden="true">
-        <div class="terminal-head">
-          <div class="terminal-tabs">
-            <span class="terminal-tab-active">Terminal</span>
-            <span>Session Logs</span>
-            <span>Problems</span>
+      <!-- ═══ Termux-style split terminal (4 sessions) ═══ -->
+      <div class="termux-wrap" aria-hidden="true">
+        <div class="termux-bar">
+          <div class="termux-bar-left">
+            <i class="fas fa-square-terminal"></i>
+            <span class="title">cognitive_refactoring</span>
+            <span class="dim">— 4 sessions running</span>
           </div>
-          <div class="terminal-dots"><span></span><span></span><span></span></div>
+          <div class="termux-bar-right">
+            <span class="termux-badge">SPLIT 2×2</span>
+            <div class="termux-dots"><span></span><span></span><span></span></div>
+          </div>
         </div>
-        <div class="terminal-body" id="term-body">
-          <template x-for="(line, i) in terminalLines" :key="i">
-            <div class="tl" :class="line.cls">
-              <span class="prompt" x-show="line.prompt" x-text="line.prompt"></span><span x-text="line.text"></span><span x-show="line.cursor" class="cursor"></span>
+
+        <div class="termux-grid">
+          <template x-for="(pane, pi) in panes" :key="pi">
+            <div class="termux-pane">
+              <div class="termux-pane-head">
+                <div class="termux-session">
+                  <span class="dot"></span>
+                  <span class="num" x-text="'[' + (pi + 1) + ']'"></span>
+                  <span x-text="pane.label"></span>
+                </div>
+                <div class="termux-pane-title" x-text="pane.cmdShort"></div>
+              </div>
+              <div class="termux-pane-body">
+                <template x-for="(line, li) in pane.lines" :key="li">
+                  <div class="tl" :class="line.cls"><span class="prompt" x-show="line.prompt" x-text="line.prompt"></span><span class="txt" x-text="line.text"></span><span class="cursor" x-show="line.cursor"></span></div>
+                </template>
+              </div>
             </div>
           </template>
         </div>
@@ -752,60 +825,65 @@ class MindDebugger {
 <script>
 function landingEngine() {
   return {
-    /* ── Terminal (bash-стиль) ── */
-    terminalLines: [],
-    terminalRunning: false,
-    welcomeLines: [
-      'Last login: Mon Oct 14 09:12:03 on ttys001',
-      'cognitive_refactoring.sh v1.0 — cognitive debugger ready',
-      'type `help` for available commands or just wait',
-      ''
-    ],
-    terminalScript: [
+    /* ── Termux panes ── */
+    panes: [
       {
+        label: 'identity',
+        cmdShort: '~ whoami',
         cmd: 'whoami',
         out: [
-          { cls: '', text: 'alexey.babanov // психолог-консультант & инженер' }
-        ]
+          { cls: '', text: 'alexey.babanov' },
+          { cls: 'cmt', text: '# психолог-консультант & инженер' }
+        ],
+        lines: [],
+        bootDelay: 0
       },
       {
+        label: 'manifest',
+        cmdShort: '~ cat manifest.txt',
         cmd: 'cat manifest.txt',
         out: [
-          { cls: '', text: 'без давления.' },
-          { cls: '', text: 'без обещаний.' },
+          { cls: '', text: 'без давления. без обещаний.' },
           { cls: '', text: 'через честность и структуру.' }
-        ]
+        ],
+        lines: [],
+        bootDelay: 180
       },
       {
+        label: 'diagnostics',
+        cmdShort: '~ .sh --status',
         cmd: './cognitive_refactoring.sh --status',
         out: [
-          { cls: 'err',  text: 'error:   energy_level = 14% [CRITICAL_LOW]' },
-          { cls: 'warn', text: 'warning: rumination_loop consumed 89% CPU thread' },
-          { cls: 'err',  text: 'error:   launch_anxiety detected inside project_pipeline' },
-          { cls: 'warn', text: 'status:  deployment blocked by internal_critic.sys' }
-        ]
+          { cls: 'err',  text: 'error:   energy_level = 14% [CRIT]' },
+          { cls: 'warn', text: 'warning: rumination_loop 89% CPU' },
+          { cls: 'err',  text: 'error:   launch_anxiety in pipeline' },
+          { cls: 'warn', text: 'status:  blocked by internal_critic' }
+        ],
+        lines: [],
+        bootDelay: 360
       },
       {
+        label: 'resolution',
+        cmdShort: '~ .sh --run',
         cmd: './cognitive_refactoring.sh --run',
         out: [
-          { cls: 'ok', text: 'success: active_session found. ready to start.' },
-          { cls: 'ok', text: '         → click [ run cognitive_refactoring.sh ] above' }
-        ]
+          { cls: 'ok', text: 'success: active_session ready' },
+          { cls: 'cmt', text: '→ click [run ...] above to start' }
+        ],
+        lines: [],
+        bootDelay: 540
       }
     ],
 
-    /* ── Certificates ── */
     activeCert: 'ippip-diploma',
     certModal: { open: false, src: '', caption: '' },
 
-    /* ── Form ── */
     formState: 'idle',
     errorMessage: '',
     csrf: '',
     ymClientId: '',
     form: { name: '', contact: '', msg: '', consent: false },
 
-    /* ── Parallax ── */
     rafPending: false,
     lastScrollY: 0,
 
@@ -816,86 +894,66 @@ function landingEngine() {
       if (meta) this.csrf = meta.getAttribute('content');
       this.initParallax();
 
-      // Запускаем терминал, если не prefers-reduced-motion
       const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       if (reduced) {
-        // Показать полный лог сразу, без анимации
-        this.welcomeLines.forEach(t => this.terminalLines.push({ cls: 'welcome', text: t }));
-        this.terminalScript.forEach(step => {
-          this.terminalLines.push({ cls: 'cmd', prompt: '~ $', text: step.cmd });
-          step.out.forEach(o => this.terminalLines.push(o));
-          this.terminalLines.push({ cls: '', text: '' });
+        // Static render: all panes fully filled
+        this.panes.forEach((pane, i) => {
+          const lines = [
+            { cls: 'cmd', prompt: '~ $', text: pane.cmd },
+            ...pane.out
+          ];
+          this.panes[i].lines = lines;
         });
-        this.terminalLines.push({ cls: 'cmd', prompt: '~ $', text: '', cursor: true });
       } else {
-        this.runTerminal();
+        this.startAllPanes();
       }
     },
 
     sleep(ms) { return new Promise(r => setTimeout(r, ms)); },
 
-    scrollTerm() {
-      setTimeout(() => {
-        const el = document.getElementById('term-body');
-        if (el) el.scrollTop = el.scrollHeight;
-      }, 0);
+    async runPane(paneIndex) {
+      const pane = this.panes[paneIndex];
+      // reset
+      this.panes[paneIndex].lines = [];
+      await this.sleep(200);
+
+      // command line with typing
+      const cmdLine = { cls: 'cmd', prompt: '~ $', text: '', cursor: true };
+      this.panes[paneIndex].lines = [cmdLine];
+      await this.sleep(120);
+
+      for (const ch of pane.cmd) {
+        cmdLine.text += ch;
+        this.panes[paneIndex].lines = [...this.panes[paneIndex].lines];
+        await this.sleep(20 + Math.random() * 25);
+      }
+      cmdLine.cursor = false;
+      this.panes[paneIndex].lines = [...this.panes[paneIndex].lines];
+      await this.sleep(240);
+
+      // output
+      for (const o of pane.out) {
+        this.panes[paneIndex].lines = [...this.panes[paneIndex].lines, o];
+        await this.sleep(120);
+      }
+
+      // final prompt
+      this.panes[paneIndex].lines = [
+        ...this.panes[paneIndex].lines,
+        { cls: 'cmd', prompt: '~ $', text: '', cursor: true }
+      ];
     },
 
-    async runTerminal() {
-      if (this.terminalRunning) return;
-      this.terminalRunning = true;
-
+    async startAllPanes() {
       while (true) {
-        this.terminalLines = [];
-        this.scrollTerm();
-        await this.sleep(500);
-
-        // Greeting
-        for (const w of this.welcomeLines) {
-          this.terminalLines.push({ cls: 'welcome', text: w });
-          this.terminalLines = [...this.terminalLines];
-          this.scrollTerm();
-          await this.sleep(180);
-        }
-        await this.sleep(400);
-
-        // Script
-        for (const step of this.terminalScript) {
-          const line = { cls: 'cmd', prompt: '~ $', text: '', cursor: true };
-          this.terminalLines.push(line);
-          this.terminalLines = [...this.terminalLines];
-          this.scrollTerm();
-
-          // Typing effect
-          for (const ch of step.cmd) {
-            line.text += ch;
-            this.terminalLines = [...this.terminalLines];
-            this.scrollTerm();
-            await this.sleep(35 + Math.random() * 45);
-          }
-          line.cursor = false;
-          this.terminalLines = [...this.terminalLines];
-          await this.sleep(380);
-
-          // Output
-          for (const o of step.out) {
-            this.terminalLines.push(o);
-            this.terminalLines = [...this.terminalLines];
-            this.scrollTerm();
-            await this.sleep(160);
-          }
-          this.terminalLines.push({ cls: '', text: '' });
-          this.terminalLines = [...this.terminalLines];
-          this.scrollTerm();
-          await this.sleep(520);
-        }
-
-        // Финальный курсор
-        this.terminalLines.push({ cls: 'cmd', prompt: '~ $', text: '', cursor: true });
-        this.terminalLines = [...this.terminalLines];
-        this.scrollTerm();
-
-        await this.sleep(7000);
+        const tasks = this.panes.map((pane, i) =>
+          (async () => {
+            await this.sleep(pane.bootDelay);
+            await this.runPane(i);
+          })()
+        );
+        await Promise.all(tasks);
+        await this.sleep(6500);
       }
     },
 
