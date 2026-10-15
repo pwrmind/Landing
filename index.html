@@ -26,7 +26,7 @@
   "@context": "https://schema.org",
   "@type": "ProfessionalService",
   "name": "Алексей Бабанов — Рефакторинг мышления",
-  "description": "Краткосрочная структурная КПТ-терапия и когнитивно-поведенческий CBC-коучинг для инженеров, предпринимателей и создателей продуктов от практикующего психолога с 15-летним ИТ-бэкграундом.",
+  "description": "Краткосрочная структурная КПТ-терапия и когнитивно-поведенческий CBC-коучинг для инженеров, предпринимателей и создателей продуктов.",
   "url": "{{SITE_URL}}/",
   "image": "{{OG_IMAGE}}",
   "priceRange": "3000 RUB",
@@ -126,17 +126,57 @@ p{margin:0 0 16px;color:var(--token-text);}
 .btn i{font-size:.9em;}
 .btn-block{width:100%;justify-content:center;}
 
-.terminal{margin-top:34px;background:var(--ide-panel-2);border:1px solid var(--ide-border);border-radius:10px;overflow:hidden;font-family:var(--font-mono);max-width:820px;}
-.terminal-head{display:flex;align-items:center;justify-content:space-between;padding:10px 16px;background:var(--ide-panel);border-bottom:1px solid var(--ide-border);font-size:.74rem;color:var(--token-comment);}
+/* ─── Terminal (bash-style) ─── */
+.terminal{
+  margin-top:34px;
+  background:#14161A;
+  border:1px solid var(--ide-border);
+  border-radius:10px;
+  overflow:hidden;
+  font-family:var(--font-mono);
+  max-width:840px;
+  box-shadow:0 8px 30px rgba(0,0,0,.35);
+}
+.terminal-head{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:10px 16px;
+  background:var(--ide-panel);
+  border-bottom:1px solid var(--ide-border);
+  font-size:.74rem;color:var(--token-comment);
+}
 .terminal-tabs{display:flex;gap:18px;}
 .terminal-tab-active{color:var(--token-keyword);position:relative;}
 .terminal-tab-active::after{content:'';position:absolute;left:0;right:0;bottom:-11px;height:1px;background:var(--token-keyword);}
 .terminal-dots{display:flex;gap:6px;}
 .terminal-dots span{width:9px;height:9px;border-radius:50%;background:var(--ide-border);}
-.terminal-body{padding:18px 20px 22px;font-size:.85rem;line-height:1.7;color:var(--token-text);min-height:96px;}
-.terminal-body .ln{display:flex;gap:14px;white-space:pre-wrap;word-break:break-word;}
-.terminal-body .ln .num{color:var(--token-comment);min-width:22px;text-align:right;user-select:none;opacity:.55;}
-.cursor{display:inline-block;width:8px;height:14px;background:var(--token-text);vertical-align:-2px;margin-left:2px;animation:blink 1s steps(2,start) infinite;}
+
+.terminal-body{
+  padding:16px 20px 20px;
+  font-size:.85rem;
+  line-height:1.65;
+  color:var(--token-text);
+  height:250px;
+  overflow-y:auto;
+  scrollbar-width:thin;
+  scrollbar-color:var(--ide-border) transparent;
+}
+.terminal-body::-webkit-scrollbar{width:6px;}
+.terminal-body::-webkit-scrollbar-track{background:transparent;}
+.terminal-body::-webkit-scrollbar-thumb{background:var(--ide-border);border-radius:3px;}
+
+.tl{white-space:pre-wrap;word-break:break-word;min-height:1.4em;}
+.tl .prompt{color:var(--token-dracula);margin-right:8px;user-select:none;font-weight:500;}
+.tl.welcome{color:var(--token-comment);}
+.tl.err{color:var(--token-error);}
+.tl.warn{color:var(--token-keyword);}
+.tl.ok{color:var(--token-string);}
+.tl.cmd{color:#E2E8F0;}
+
+.cursor{
+  display:inline-block;width:8px;height:14px;
+  background:var(--token-text);vertical-align:-2px;margin-left:2px;
+  animation:blink 1s steps(2,start) infinite;
+}
 @keyframes blink{to{visibility:hidden;}}
 
 .grid{display:grid;grid-template-columns:1fr;gap:22px;}
@@ -167,22 +207,18 @@ p{margin:0 0 16px;color:var(--token-text);}
 .map-row .arrow{color:var(--token-comment);}
 .map-row .to{color:var(--token-string);flex:1;text-align:right;}
 
-/* ─── Профиль + верификация ─── */
 .profile-layout{display:grid;grid-template-columns:1fr;gap:40px;align-items:start;}
 @media (min-width:900px){.profile-layout{grid-template-columns:400px 1fr;gap:56px;}}
-
 .photo-wrap{position:relative;padding-bottom:22px;padding-right:22px;}
 .photo-frame{position:relative;border-radius:14px;border:1px solid var(--ide-border);background:var(--ide-panel);overflow:hidden;aspect-ratio:4 / 5;}
 .photo-frame img{width:100%;height:100%;object-fit:cover;object-position:center 22%;display:block;filter:grayscale(10%) contrast(102%);}
 .photo-philosophy{position:absolute;bottom:0;right:0;width:150px;height:150px;background:rgba(30,31,34,.97);border:1px solid var(--token-dracula);border-radius:50%;display:flex;align-items:center;justify-content:center;padding:16px;box-shadow:0 8px 28px rgba(0,0,0,.6);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);text-align:center;}
 .photo-philosophy p{font-family:var(--font-mono);font-size:.66rem;line-height:1.55;color:var(--token-dracula);font-weight:500;margin:0;letter-spacing:.02em;}
 .photo-philosophy p span{display:block;}
-
 .profile-text p{color:var(--token-text);}
 .profile-text .signature{font-family:var(--font-mono);font-size:.82rem;color:var(--token-comment);margin-top:22px;padding-top:16px;border-top:1px dashed var(--ide-border-soft);}
 .profile-text .signature strong{color:var(--token-string);}
 
-/* ─── Certificates ─── */
 .cert-window{background:var(--ide-panel);border:1px solid var(--ide-border);border-radius:10px;overflow:hidden;margin-top:44px;}
 .cert-window-head{padding:10px 16px;background:var(--ide-panel-2);border-bottom:1px solid var(--ide-border);font-family:var(--font-mono);font-size:.74rem;color:var(--token-comment);display:flex;align-items:center;justify-content:space-between;gap:12px;}
 .cert-window-head .title{display:flex;align-items:center;gap:10px;}
@@ -278,6 +314,7 @@ form{display:flex;flex-direction:column;gap:18px;}
   .btn:hover{transform:none;}
   .cursor{animation:none;}
   section.snap{min-height:auto;display:block;}
+  .terminal-body{overflow-y:auto;}
 }
 </style>
 </head>
@@ -330,6 +367,8 @@ class MindDebugger {
           <i class="fas fa-play"></i> run cognitive_refactoring.sh
         </a>
       </div>
+
+      <!-- ═══ Terminal (bash-стиль) ═══ -->
       <div class="terminal" aria-hidden="true">
         <div class="terminal-head">
           <div class="terminal-tabs">
@@ -339,9 +378,12 @@ class MindDebugger {
           </div>
           <div class="terminal-dots"><span></span><span></span><span></span></div>
         </div>
-        <div class="terminal-body">
-          <div class="ln"><span class="num">1</span><span x-text="terminalText"></span></div>
-          <div class="ln"><span class="num">2</span><span><span class="cursor"></span></span></div>
+        <div class="terminal-body" id="term-body">
+          <template x-for="(line, i) in terminalLines" :key="i">
+            <div class="tl" :class="line.cls">
+              <span class="prompt" x-show="line.prompt" x-text="line.prompt"></span><span x-text="line.text"></span><span x-show="line.cursor" class="cursor"></span>
+            </div>
+          </template>
         </div>
       </div>
     </div>
@@ -465,7 +507,6 @@ class MindDebugger {
           </button>
         </div>
 
-        <!-- Диплом ИППиП -->
         <div class="cert-pane" x-show="activeCert === 'ippip-diploma'" x-cloak>
           <div class="cert-meta">
             <h3>Профессиональная переподготовка <span class="tag">DIPLOMA</span></h3>
@@ -485,7 +526,6 @@ class MindDebugger {
           </div>
         </div>
 
-        <!-- Сертификат ИППиП -->
         <div class="cert-pane" x-show="activeCert === 'ippip-course'" x-cloak>
           <div class="cert-meta">
             <h3>Повышение квалификации <span class="tag">CERTIFICATE</span></h3>
@@ -503,7 +543,6 @@ class MindDebugger {
           </div>
         </div>
 
-        <!-- Erickson -->
         <div class="cert-pane" x-show="activeCert === 'erickson'" x-cloak>
           <div class="cert-meta">
             <h3>Международный стандарт <span class="tag">INTERNATIONAL</span></h3>
@@ -520,7 +559,6 @@ class MindDebugger {
           </div>
         </div>
 
-        <!-- Psychodemia -->
         <div class="cert-pane" x-show="activeCert === 'psychodemia'" x-cloak>
           <div class="cert-meta">
             <h3>Обзорный курс <span class="tag">COURSE</span></h3>
@@ -686,7 +724,6 @@ class MindDebugger {
     </div>
   </section>
 
-  <!-- ══════════ Modal ══════════ -->
   <div class="modal-backdrop" x-show="certModal.open" x-cloak @click.self="certModal.open = false" @keydown.escape.window="certModal.open = false" role="dialog" aria-modal="true" :aria-label="certModal.caption">
     <div class="modal-panel">
       <button type="button" class="modal-close" @click="certModal.open = false">
@@ -715,36 +752,151 @@ class MindDebugger {
 <script>
 function landingEngine() {
   return {
-    terminalText: 'initializing cognitive_refactoring.sh …',
-    terminalPool: [
-      'error:   energy_level = 14% [CRITICAL_LOW]',
-      'warning: rumination_loop consumed 89% CPU thread',
-      'error:   launch_anxiety detected inside project_pipeline',
-      'status:  deployment blocked by internal_critic.sys',
-      'success: active_session found. run cognitive_refactoring.sh'
+    /* ── Terminal (bash-стиль) ── */
+    terminalLines: [],
+    terminalRunning: false,
+    welcomeLines: [
+      'Last login: Mon Oct 14 09:12:03 on ttys001',
+      'cognitive_refactoring.sh v1.0 — cognitive debugger ready',
+      'type `help` for available commands or just wait',
+      ''
     ],
-    terminalIndex: 0,
-    terminalTimer: null,
+    terminalScript: [
+      {
+        cmd: 'whoami',
+        out: [
+          { cls: '', text: 'alexey.babanov // психолог-консультант & инженер' }
+        ]
+      },
+      {
+        cmd: 'cat manifest.txt',
+        out: [
+          { cls: '', text: 'без давления.' },
+          { cls: '', text: 'без обещаний.' },
+          { cls: '', text: 'через честность и структуру.' }
+        ]
+      },
+      {
+        cmd: './cognitive_refactoring.sh --status',
+        out: [
+          { cls: 'err',  text: 'error:   energy_level = 14% [CRITICAL_LOW]' },
+          { cls: 'warn', text: 'warning: rumination_loop consumed 89% CPU thread' },
+          { cls: 'err',  text: 'error:   launch_anxiety detected inside project_pipeline' },
+          { cls: 'warn', text: 'status:  deployment blocked by internal_critic.sys' }
+        ]
+      },
+      {
+        cmd: './cognitive_refactoring.sh --run',
+        out: [
+          { cls: 'ok', text: 'success: active_session found. ready to start.' },
+          { cls: 'ok', text: '         → click [ run cognitive_refactoring.sh ] above' }
+        ]
+      }
+    ],
+
+    /* ── Certificates ── */
     activeCert: 'ippip-diploma',
     certModal: { open: false, src: '', caption: '' },
+
+    /* ── Form ── */
     formState: 'idle',
     errorMessage: '',
     csrf: '',
     ymClientId: '',
     form: { name: '', contact: '', msg: '', consent: false },
+
+    /* ── Parallax ── */
     rafPending: false,
     lastScrollY: 0,
 
     boot() {
-      this.terminalTimer = setInterval(() => {
-        this.terminalIndex = (this.terminalIndex + 1) % this.terminalPool.length;
-        this.terminalText = this.terminalPool[this.terminalIndex];
-      }, 3400);
       const m = document.cookie.match(/(?:^|;\s*)_ym_uid=([^;]*)/);
       if (m) this.ymClientId = decodeURIComponent(m[1]);
       const meta = document.querySelector('meta[name="csrf-token"]');
       if (meta) this.csrf = meta.getAttribute('content');
       this.initParallax();
+
+      // Запускаем терминал, если не prefers-reduced-motion
+      const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (reduced) {
+        // Показать полный лог сразу, без анимации
+        this.welcomeLines.forEach(t => this.terminalLines.push({ cls: 'welcome', text: t }));
+        this.terminalScript.forEach(step => {
+          this.terminalLines.push({ cls: 'cmd', prompt: '~ $', text: step.cmd });
+          step.out.forEach(o => this.terminalLines.push(o));
+          this.terminalLines.push({ cls: '', text: '' });
+        });
+        this.terminalLines.push({ cls: 'cmd', prompt: '~ $', text: '', cursor: true });
+      } else {
+        this.runTerminal();
+      }
+    },
+
+    sleep(ms) { return new Promise(r => setTimeout(r, ms)); },
+
+    scrollTerm() {
+      setTimeout(() => {
+        const el = document.getElementById('term-body');
+        if (el) el.scrollTop = el.scrollHeight;
+      }, 0);
+    },
+
+    async runTerminal() {
+      if (this.terminalRunning) return;
+      this.terminalRunning = true;
+
+      while (true) {
+        this.terminalLines = [];
+        this.scrollTerm();
+        await this.sleep(500);
+
+        // Greeting
+        for (const w of this.welcomeLines) {
+          this.terminalLines.push({ cls: 'welcome', text: w });
+          this.terminalLines = [...this.terminalLines];
+          this.scrollTerm();
+          await this.sleep(180);
+        }
+        await this.sleep(400);
+
+        // Script
+        for (const step of this.terminalScript) {
+          const line = { cls: 'cmd', prompt: '~ $', text: '', cursor: true };
+          this.terminalLines.push(line);
+          this.terminalLines = [...this.terminalLines];
+          this.scrollTerm();
+
+          // Typing effect
+          for (const ch of step.cmd) {
+            line.text += ch;
+            this.terminalLines = [...this.terminalLines];
+            this.scrollTerm();
+            await this.sleep(35 + Math.random() * 45);
+          }
+          line.cursor = false;
+          this.terminalLines = [...this.terminalLines];
+          await this.sleep(380);
+
+          // Output
+          for (const o of step.out) {
+            this.terminalLines.push(o);
+            this.terminalLines = [...this.terminalLines];
+            this.scrollTerm();
+            await this.sleep(160);
+          }
+          this.terminalLines.push({ cls: '', text: '' });
+          this.terminalLines = [...this.terminalLines];
+          this.scrollTerm();
+          await this.sleep(520);
+        }
+
+        // Финальный курсор
+        this.terminalLines.push({ cls: 'cmd', prompt: '~ $', text: '', cursor: true });
+        this.terminalLines = [...this.terminalLines];
+        this.scrollTerm();
+
+        await this.sleep(7000);
+      }
     },
 
     initParallax() {
