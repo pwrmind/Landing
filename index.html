@@ -428,6 +428,163 @@ p{margin:0 0 16px;color:var(--token-text);}
   .diff-stat{display:none;}
 }
 
+/* ─── protocols table (section 03) ─── */
+.protocols-table{
+  margin-top:20px;
+  border:1px solid var(--ide-border);
+  border-radius:12px;
+  overflow:hidden;
+  font-family:var(--font-mono);
+  background:var(--ide-panel);
+  box-shadow:0 6px 22px rgba(0,0,0,.28);
+}
+.protocols-table table{
+  width:100%;
+  border-collapse:collapse;
+}
+.protocols-table th,
+.protocols-table td{
+  padding:14px 18px;
+  text-align:left;
+  border-bottom:1px solid var(--ide-border);
+  vertical-align:top;
+  font-size:.82rem;
+}
+.protocols-table tr:last-child td{
+  border-bottom:none;
+}
+.protocols-table th{
+  background:var(--ide-panel-2);
+  font-size:.68rem;
+  font-weight:500;
+  text-transform:uppercase;
+  letter-spacing:.1em;
+  color:var(--token-comment);
+}
+.protocols-table td:first-child{
+  color:var(--token-keyword);
+  font-family:var(--font-mono);
+  font-weight:500;
+  white-space:nowrap;
+  width:32%;
+  letter-spacing:-.01em;
+}
+.protocols-table td:nth-child(2){
+  color:var(--token-text);
+  line-height:1.55;
+}
+.protocols-table td:last-child{
+  color:var(--token-string);
+  white-space:nowrap;
+  text-align:right;
+  width:16%;
+  font-size:.78rem;
+}
+@media (max-width:600px){
+  .protocols-table th,
+  .protocols-table td{padding:11px 13px;font-size:.76rem;}
+  .protocols-table td:first-child{width:auto;white-space:normal;}
+  .protocols-table td:last-child{font-size:.72rem;}
+}
+
+/* ─── pricing tiers (section 06) ─── */
+.tiers{
+  display:grid;
+  grid-template-columns:1fr;
+  gap:16px;
+  margin-top:48px;
+}
+@media (min-width:760px){
+  .tiers{grid-template-columns:repeat(3,1fr);gap:18px;}
+}
+.tier{
+  background:var(--ide-panel);
+  border:1px solid var(--ide-border);
+  border-radius:12px;
+  padding:26px 22px 22px;
+  font-family:var(--font-mono);
+  transition:border-color .25s ease,transform .2s ease;
+  display:flex;
+  flex-direction:column;
+}
+.tier:hover{
+  border-color:var(--token-dracula);
+  transform:translateY(-2px);
+}
+.tier.featured{
+  border-color:var(--token-keyword);
+  box-shadow:0 8px 26px rgba(204,120,50,.10);
+}
+.tier-head{
+  font-size:.68rem;
+  text-transform:uppercase;
+  letter-spacing:.16em;
+  color:var(--token-comment);
+  margin-bottom:10px;
+}
+.tier.featured .tier-head{color:var(--token-keyword);}
+.tier-name{
+  font-family:var(--font-sans);
+  font-size:1.2rem;
+  font-weight:700;
+  color:#FFFFFF;
+  margin-bottom:6px;
+  letter-spacing:-.01em;
+}
+.tier-sub{
+  font-size:.78rem;
+  color:var(--token-comment);
+  margin-bottom:20px;
+  padding-bottom:18px;
+  border-bottom:1px dashed var(--ide-border);
+  line-height:1.55;
+}
+.tier-list{
+  list-style:none;
+  padding:0;
+  margin:0 0 20px;
+  font-size:.82rem;
+  flex-grow:1;
+}
+.tier-list li{
+  padding:6px 0 6px 18px;
+  position:relative;
+  color:var(--token-text);
+  line-height:1.5;
+}
+.tier-list li::before{
+  content:'›';
+  position:absolute;
+  left:0;
+  top:6px;
+  color:var(--token-keyword);
+  font-weight:700;
+  font-size:1rem;
+}
+.tier.featured .tier-list li::before{color:var(--token-dracula);}
+.tier-price{
+  font-size:1.15rem;
+  font-weight:700;
+  color:#FFFFFF;
+  padding-top:18px;
+  border-top:1px solid var(--ide-border);
+  font-family:var(--font-sans);
+  letter-spacing:-.01em;
+}
+.tier-price small{
+  display:block;
+  font-family:var(--font-mono);
+  font-size:.7rem;
+  color:var(--token-comment);
+  font-weight:400;
+  margin-top:6px;
+  letter-spacing:.02em;
+}
+@media (max-width:600px){
+  .tier{padding:22px 18px 18px;}
+  .tier-name{font-size:1.1rem;}
+}
+
 .mapping{display:grid;grid-template-columns:1fr;gap:14px;margin-top:28px;}
 @media (min-width:760px){.mapping{grid-template-columns:repeat(2,1fr);gap:18px;}}
 .map-row{display:flex;align-items:center;gap:14px;padding:14px 18px;background:var(--ide-panel);border:1px solid var(--ide-border);border-radius:10px;font-family:var(--font-mono);font-size:.82rem;transition:border-color .2s;}
@@ -544,6 +701,8 @@ form{display:flex;flex-direction:column;gap:18px;}
   .cursor{animation:none;}
   .tl{animation:none;}
   .type-caret{animation:none;opacity:.5;}
+  .tier{transition:none;}
+  .tier:hover{transform:none;}
 }
 
 /* ── easter egg: rogue ── */
@@ -722,6 +881,49 @@ class MindDebugger {
       <p style="margin-top:26px;color:var(--token-comment);font-family:var(--font-mono);font-size:.82rem;line-height:1.65;max-width:760px;">
         <span style="color:var(--token-dracula);">//</span> 5..8 сессий = тот самый патч. Без магии, без «поработать над собой ещё годик» и без пакетов сессий на год вперёд.
       </p>
+
+      <p style="margin-top:36px;color:var(--token-comment);font-family:var(--font-mono);font-size:.82rem;line-height:1.65;max-width:760px;">
+        <span style="color:var(--token-dracula);">//</span> Протоколы, применяемые в цикле. Набор подбирается по карте — универсального нет.
+      </p>
+
+      <div class="protocols-table">
+        <table>
+          <thead>
+            <tr>
+              <th>Protocol</th>
+              <th>Что делает</th>
+              <th>Сессий</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>diagnostic</td>
+              <td>Карта когнитивных сбоев: локализация и приоритизация 5 ключевых узлов. По итогу — рекомендация, нужна ли работа и какая.</td>
+              <td>1</td>
+            </tr>
+            <tr>
+              <td>warnings_as_errors</td>
+              <td>Калибровка порога релиза. Снятие гиперответственности и страха критики. Перфекционизм перестаёт блокировать запуск.</td>
+              <td>2</td>
+            </tr>
+            <tr>
+              <td>memory_leak_fix</td>
+              <td>Изоляция руминации. Освобождение фоновых процессов, которые годами съедают CPU и крадут внимание от текущих задач.</td>
+              <td>2</td>
+            </tr>
+            <tr>
+              <td>scheduler_deadlock</td>
+              <td>Разблокировка планировщика. Запуск задач, которые ждут своего часа месяцами и годами. Действие вместо анализа.</td>
+              <td>2–3</td>
+            </tr>
+            <tr>
+              <td>refactor_toolchain</td>
+              <td>Сборка личного дебаггера. Инструменты остаются у вас, не у меня. Дальше работаете автономно.</td>
+              <td>1</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   </section>
 
@@ -906,6 +1108,11 @@ class MindDebugger {
               <td><strong>Чистая наука.</strong> Поиск когнитивных ловушек по доказательным протоколам КПТ и CBC.</td>
             </tr>
             <tr>
+              <td>Единица работы</td>
+              <td>Час разговора. Прогресс измеряется количеством встреч.</td>
+              <td><strong>Разобранный паттерн.</strong> Прогресс измеряется количеством перезаписанных установок.</td>
+            </tr>
+            <tr>
               <td>Срок</td>
               <td>Годы визитов без чёткого критерия завершения.</td>
               <td><strong>5..8 сессий.</strong> Вы получаете автономный дебаггер и работаете с ним сами.</td>
@@ -949,6 +1156,47 @@ class MindDebugger {
         <div class="contract-row">
           <span class="mark">✓</span>
           <span><strong>Вы уходите с инструментами.</strong> Не с подпиской. Не с зависимостью от терапевта. С работающими техниками самопомощи.</span>
+        </div>
+      </div>
+
+      <p style="margin-top:48px;color:var(--token-comment);font-family:var(--font-mono);font-size:.82rem;line-height:1.65;max-width:760px;">
+        <span style="color:var(--token-dracula);">//</span> Три формата работы. Выбираете сами — от разовой диагностики до полного цикла. Универсального нет.
+      </p>
+
+      <div class="tiers">
+        <div class="tier">
+          <div class="tier-head">// entry</div>
+          <div class="tier-name">Diagnostic</div>
+          <div class="tier-sub">Одна сессия. Понять, что происходит, и нужна ли работа.</div>
+          <ul class="tier-list">
+            <li>Карта когнитивных сбоев</li>
+            <li>Локализация 1–2 главных узлов</li>
+            <li>Рекомендация: продолжать или нет</li>
+          </ul>
+          <div class="tier-price">3 000 ₽<small>за сессию · 50 мин</small></div>
+        </div>
+        <div class="tier featured">
+          <div class="tier-head">// standard</div>
+          <div class="tier-name">Refactor</div>
+          <div class="tier-sub">Пять сессий. Разобрать и перезаписать ключевые паттерны.</div>
+          <ul class="tier-list">
+            <li>Всё из Diagnostic</li>
+            <li>Разбор 2–3 ключевых установок</li>
+            <li>Протоколы самопомощи на руки</li>
+            <li>Финал — автономный дебаггер</li>
+          </ul>
+          <div class="tier-price">14 000 ₽<small>за цикл · 5 × 50 мин</small></div>
+        </div>
+        <div class="tier">
+          <div class="tier-head">// extended</div>
+          <div class="tier-name">Autonomy</div>
+          <div class="tier-sub">Восемь сессий. Полный цикл с поддержкой после.</div>
+          <ul class="tier-list">
+            <li>Всё из Refactor</li>
+            <li>+3 месяца поддержки в Telegram</li>
+            <li>Разбор кейсов по ходу жизни</li>
+          </ul>
+          <div class="tier-price">22 000 ₽<small>за цикл · 8 × 50 мин</small></div>
         </div>
       </div>
     </div>
