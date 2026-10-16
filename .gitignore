@@ -416,3 +416,9 @@ FodyWeavers.xsd
 *.msix
 *.msm
 *.msp
+
+# Rust build artifacts
+rogue/target/
+rogue/pkg/
+.rustc_info.json
+CACHEDIR.TAG
