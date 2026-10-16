@@ -569,7 +569,7 @@ class MindDebugger {
       </p>
       <div style="margin-top:32px;">
         <a href="#contact" class="btn">
-          <i class="fas fa-play"></i> run cognitive_refactoring.sh
+          <i class="fa fa-usd" aria-hidden="true"></i> chmod +x cognitive_refactoring.sh
         </a>
       </div>
 
@@ -953,7 +953,7 @@ class MindDebugger {
             </label>
             <button type="submit" class="btn btn-block" :disabled="formState === 'submitting'">
               <template x-if="formState !== 'submitting'">
-                <span><i class="fas fa-play"></i> initialize_session()</span>
+                <span><i class="fa fa-usd" aria-hidden="true"></i> ./cognitive_refactoring.sh</span>
               </template>
               <template x-if="formState === 'submitting'">
                 <span><i class="fas fa-spinner fa-spin"></i> compiling payload…</span>
