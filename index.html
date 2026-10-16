@@ -105,12 +105,6 @@ section{position:relative;z-index:2;padding:clamp(60px,9vw,110px) 0;}
 .snap-label{display:inline-block;font-family:var(--font-mono);font-size:.7rem;color:var(--token-comment);letter-spacing:.18em;text-transform:uppercase;margin-bottom:18px;opacity:.75;}
 .snap-label::before{content:'// ';color:var(--token-dracula);}
 
-@media (min-width:1024px) and (min-height:760px) and (prefers-reduced-motion: no-preference){
-  html{scroll-snap-type:y proximity;}
-  section.snap{min-height:100vh;display:flex;align-items:center;scroll-snap-align:start;scroll-snap-stop:normal;}
-  section.snap > .container{width:100%;}
-}
-
 .badge{display:inline-block;font-family:var(--font-mono);font-size:.72rem;font-weight:500;color:var(--token-dracula);border:1px solid var(--ide-border);background:var(--token-dracula-soft);padding:5px 12px;border-radius:6px;margin-bottom:20px;letter-spacing:.04em;}
 h1{font-size:clamp(1.75rem,4.6vw,2.9rem);font-weight:800;line-height:1.14;letter-spacing:-.02em;color:#FFFFFF;margin:0 0 20px;max-width:920px;}
 h1 .accent{color:var(--token-keyword);}
@@ -512,14 +506,13 @@ form{display:flex;flex-direction:column;gap:18px;}
 [x-cloak]{display:none!important;}
 
 @media (prefers-reduced-motion: reduce){
-  html{scroll-behavior:auto;scroll-snap-type:none;}
+  html{scroll-behavior:auto;}
   .bg-grid,.bg-glow,.bg-code{display:none;}
   .card{transition:none;}
   .card:hover{transform:none;}
   .btn:hover{transform:none;}
   .cursor{animation:none;}
   .tl{animation:none;}
-  section.snap{min-height:auto;display:block;}
 }
 </style>
 </head>
@@ -553,7 +546,7 @@ class MindDebugger {
 <div x-data="landingEngine()" x-init="boot()">
 
   <!-- ══════════ 01. Hero ══════════ -->
-  <section class="snap">
+  <section>
     <div class="container">
       <span class="snap-label">01 — точка входа</span>
       <div class="badge">// cognitive_debugging</div>
@@ -612,7 +605,7 @@ class MindDebugger {
   </section>
 
   <!-- ══════════ 02. Карта багов ══════════ -->
-  <section class="snap">
+  <section>
     <div class="container">
       <span class="snap-label">02 — карта багов</span>
       <div class="section-head">
@@ -640,7 +633,7 @@ class MindDebugger {
   </section>
 
   <!-- ══════════ 03. diff: было → стало ══════════ -->
-  <section class="snap">
+  <section>
     <div class="container">
       <span class="snap-label">03 — diff: было → стало</span>
       <div class="section-head">
@@ -671,7 +664,7 @@ class MindDebugger {
   </section>
 
   <!-- ══════════ 04. Идентичность + верификация ══════════ -->
-  <section class="snap">
+  <section>
     <div class="container">
       <span class="snap-label">04 — идентичность &amp; верификация</span>
       <div class="section-head">
@@ -823,7 +816,7 @@ class MindDebugger {
   </section>
 
   <!-- ══════════ 05. Протокол ══════════ -->
-  <section class="snap">
+  <section>
     <div class="container">
       <span class="snap-label">05 — протокол</span>
       <div class="section-head">
@@ -867,7 +860,7 @@ class MindDebugger {
   </section>
 
   <!-- ══════════ 06. Контракт ══════════ -->
-  <section class="snap">
+  <section>
     <div class="container">
       <span class="snap-label">06 — контракт</span>
       <div class="section-head">
@@ -900,7 +893,7 @@ class MindDebugger {
   </section>
 
   <!-- ══════════ 07. Рантайм ══════════ -->
-  <section class="snap" id="contact">
+  <section id="contact">
     <div class="container">
       <span class="snap-label">07 — рантайм</span>
       <div class="section-head">
