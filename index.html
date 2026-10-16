@@ -127,6 +127,23 @@ p{margin:0 0 16px;color:var(--token-text);}
 .section-head h2{border-left:3px solid var(--token-dracula);padding-left:16px;}
 .section-head p{max-width:680px;color:var(--token-comment);}
 
+/* ─── Typewriter effect in H1 ─── */
+.h1-accent{
+  display:inline;
+  white-space:nowrap;
+  color:var(--token-keyword);
+}
+.type-caret{
+  display:inline-block;
+  width:3px;
+  height:.88em;
+  background:var(--token-keyword);
+  vertical-align:-.06em;
+  margin-left:3px;
+  animation:caretBlink 1s steps(2,start) infinite;
+}
+@keyframes caretBlink{to{visibility:hidden;}}
+
 .btn{display:inline-flex;align-items:center;gap:10px;padding:15px 26px;border-radius:8px;border:1px solid var(--token-keyword);font-family:var(--font-mono);font-size:.9rem;font-weight:500;cursor:pointer;transition:.2s ease;text-decoration:none;background:rgba(204,120,50,.06);color:var(--token-keyword);}
 .btn:hover{background:var(--token-keyword);color:var(--ide-bg);border-color:var(--token-keyword-hover);text-decoration:none;transform:translateY(-1px);}
 .btn:disabled{opacity:.35;cursor:not-allowed;transform:none;}
@@ -344,7 +361,6 @@ p{margin:0 0 16px;color:var(--token-text);}
   color:inherit;
 }
 
-/* Файл: --- / +++ */
 .diff-line.file{
   color:var(--token-comment);
   padding-top:2px;
@@ -365,7 +381,6 @@ p{margin:0 0 16px;color:var(--token-text);}
 .diff-line.file .code{color:var(--token-comment);opacity:.85;}
 .diff-line.file .ln{opacity:.3;}
 
-/* Хунк: @@ ... @@ */
 .diff-line.hunk{
   color:var(--token-comment);
   padding-top:6px;
@@ -380,17 +395,14 @@ p{margin:0 0 16px;color:var(--token-text);}
 }
 .diff-line.hunk .ln{opacity:.3;}
 
-/* Контекст */
 .diff-line.ctx .code{color:var(--token-text);}
 
-/* Удалено */
 .diff-line.del{
   background:rgba(255,85,85,.10);
 }
 .diff-line.del .gut{color:#FF8A8A;opacity:.9;}
 .diff-line.del .code{color:#FF8A8A;}
 
-/* Добавлено */
 .diff-line.add{
   background:rgba(106,135,89,.15);
 }
@@ -522,6 +534,7 @@ form{display:flex;flex-direction:column;gap:18px;}
   .btn:hover{transform:none;}
   .cursor{animation:none;}
   .tl{animation:none;}
+  .type-caret{animation:none;opacity:.5;}
 }
 </style>
 </head>
@@ -560,8 +573,8 @@ class MindDebugger {
       <span class="snap-label">01 — точка входа</span>
       <div class="badge">// cognitive_debugging</div>
       <h1>
-        Рефакторинг мышления</br>
-        Убираем выгорание у <span class="accent">создателей продуктов</span></br>
+        Рефакторинг мышления<br>
+        Убираем выгорание у <span class="h1-accent"><span x-text="typedWord"></span><span class="type-caret" x-show="showCaret"></span></span><br>
         за 5..8 сессий.
       </h1>
       <p class="lead">
@@ -1001,6 +1014,20 @@ function landingEngine() {
     nextId() { return ++this.__uid; },
     mkLine(obj) { return Object.assign({ id: this.nextId() }, obj); },
 
+    /* ── H1 typewriter ── */
+    typedWord: '',
+    showCaret: true,
+    wordIndex: 0,
+    wordPool: [
+      'инженеров',
+      'архитекторов',
+      'основателей',
+      'создателей продуктов',
+      'фаундеров',
+      'техлидов',
+      'продактов'
+    ],
+
     /* ── Termux panes ── */
     panes: [
       {
@@ -1120,6 +1147,9 @@ function landingEngine() {
 
       const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       if (reduced) {
+        /* static state */
+        this.typedWord = 'создателей продуктов';
+        this.showCaret = false;
         this.panes.forEach((pane, i) => {
           const lines = [
             this.mkLine({ cls: 'cmd', prompt: '~ $', text: pane.cmd }),
@@ -1128,11 +1158,34 @@ function landingEngine() {
           this.panes[i].lines = lines;
         });
       } else {
+        this.startTyping();
         this.startAllPanes();
       }
     },
 
     sleep(ms) { return new Promise(r => setTimeout(r, ms)); },
+
+    /* ── H1 typewriter loop ── */
+    async startTyping() {
+      if (!this.wordPool.length) return;
+      await this.sleep(600);
+      while (true) {
+        const word = this.wordPool[this.wordIndex];
+        this.typedWord = '';
+        await this.sleep(220);
+        for (let i = 1; i <= word.length; i++) {
+          this.typedWord = word.slice(0, i);
+          await this.sleep(48 + Math.random() * 36);
+        }
+        await this.sleep(1700);
+        for (let i = word.length - 1; i >= 0; i--) {
+          this.typedWord = word.slice(0, i);
+          await this.sleep(26 + Math.random() * 12);
+        }
+        this.wordIndex = (this.wordIndex + 1) % this.wordPool.length;
+        await this.sleep(280);
+      }
+    },
 
     async runPane(paneIndex) {
       const pane = this.panes[paneIndex];
