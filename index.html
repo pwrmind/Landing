@@ -263,15 +263,146 @@ p{margin:0 0 16px;color:var(--token-text);}
 .card h3{font-size:1.05rem;font-weight:600;color:#FFFFFF;margin-bottom:10px;}
 .card p{font-size:.92rem;margin:0;color:var(--token-text);}
 
-.code-panel{background:var(--ide-panel-2);border:1px solid var(--ide-border);border-radius:10px;overflow:hidden;font-family:var(--font-mono);}
-.code-head{padding:10px 16px;background:var(--ide-panel);border-bottom:1px solid var(--ide-border);font-size:.74rem;color:var(--token-comment);display:flex;justify-content:space-between;align-items:center;}
-.code-body{padding:18px 20px 22px;font-size:.86rem;line-height:1.85;overflow-x:auto;}
-.code-body .row{white-space:nowrap;}
-.code-body .cmt{color:var(--token-comment);}
-.code-body .kw{color:var(--token-keyword);}
-.code-body .str{color:var(--token-string);}
-.code-body .fn{color:var(--token-dracula);}
-.code-body .err{color:var(--token-error);}
+/* ─── diff panel ─── */
+.diff-panel{
+  background:#0E1014;
+  border:1px solid var(--ide-border);
+  border-radius:12px;
+  overflow:hidden;
+  font-family:var(--font-mono);
+  font-size:.8rem;
+  line-height:1.6;
+  margin-top:8px;
+  box-shadow:0 8px 30px rgba(0,0,0,.35);
+}
+.diff-head{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:9px 14px;
+  background:var(--ide-panel);
+  border-bottom:1px solid var(--ide-border);
+  font-size:.74rem;
+  color:var(--token-comment);
+  gap:14px;
+}
+.diff-head i{color:var(--token-keyword);margin-right:6px;}
+.diff-stat{font-size:.72rem;white-space:nowrap;}
+.diff-stat .plus{color:#A2C48D;}
+.diff-stat .minus{color:#FF8A8A;}
+
+.diff-body{
+  padding:8px 0 10px;
+  max-height:580px;
+  overflow-y:auto;
+  overflow-x:hidden;
+  scrollbar-width:thin;
+  scrollbar-color:var(--ide-border) transparent;
+}
+.diff-body::-webkit-scrollbar{width:8px;}
+.diff-body::-webkit-scrollbar-track{background:transparent;}
+.diff-body::-webkit-scrollbar-thumb{background:var(--ide-border);border-radius:4px;}
+.diff-body::-webkit-scrollbar-thumb:hover{background:#4a4e57;}
+
+.diff-line{
+  display:flex;
+  align-items:flex-start;
+  padding:0 16px 0 0;
+  min-height:1.6em;
+  font-family:var(--font-mono);
+  font-size:.8rem;
+  font-variant-ligatures:none;
+}
+
+.diff-line .ln{
+  width:38px;
+  text-align:right;
+  padding:0 10px 0 0;
+  color:var(--token-comment);
+  opacity:.42;
+  flex-shrink:0;
+  font-size:.76rem;
+  user-select:none;
+}
+
+.diff-line .gut{
+  width:18px;
+  text-align:center;
+  padding:0 2px 0 0;
+  flex-shrink:0;
+  user-select:none;
+  font-weight:600;
+  font-size:.82rem;
+}
+
+.diff-line .code{
+  flex-grow:1;
+  min-width:0;
+  white-space:pre-wrap;
+  word-break:break-word;
+  color:inherit;
+}
+
+/* Файл: --- / +++ */
+.diff-line.file{
+  color:var(--token-comment);
+  padding-top:2px;
+  padding-bottom:2px;
+  font-size:.78rem;
+}
+.diff-line.file.new-file{
+  margin-top:14px;
+  padding-top:14px;
+  border-top:1px solid rgba(255,255,255,.05);
+}
+.diff-line.file:first-child,
+.diff-line.file.new-file:first-child{
+  margin-top:0;
+  padding-top:2px;
+  border-top:none;
+}
+.diff-line.file .code{color:var(--token-comment);opacity:.85;}
+.diff-line.file .ln{opacity:.3;}
+
+/* Хунк: @@ ... @@ */
+.diff-line.hunk{
+  color:var(--token-comment);
+  padding-top:6px;
+  padding-bottom:6px;
+  margin-top:4px;
+  font-size:.76rem;
+}
+.diff-line.hunk .code{
+  color:var(--token-dracula);
+  opacity:.65;
+  letter-spacing:.01em;
+}
+.diff-line.hunk .ln{opacity:.3;}
+
+/* Контекст */
+.diff-line.ctx .code{color:var(--token-text);}
+
+/* Удалено */
+.diff-line.del{
+  background:rgba(255,85,85,.10);
+}
+.diff-line.del .gut{color:#FF8A8A;opacity:.9;}
+.diff-line.del .code{color:#FF8A8A;}
+
+/* Добавлено */
+.diff-line.add{
+  background:rgba(106,135,89,.15);
+}
+.diff-line.add .gut{color:#A2C48D;opacity:.9;}
+.diff-line.add .code{color:#A2C48D;}
+
+@media (max-width:600px){
+  .diff-line{font-size:.74rem;}
+  .diff-line .ln{width:30px;padding-right:8px;font-size:.7rem;}
+  .diff-line .gut{width:16px;font-size:.76rem;}
+  .diff-line.file{font-size:.72rem;}
+  .diff-line.hunk{font-size:.7rem;}
+  .diff-head{font-size:.68rem;padding:9px 12px;}
+  .diff-stat{display:none;}
+}
 
 .mapping{display:grid;grid-template-columns:1fr;gap:14px;margin-top:28px;}
 @media (min-width:760px){.mapping{grid-template-columns:repeat(2,1fr);gap:18px;}}
@@ -506,34 +637,34 @@ class MindDebugger {
     </div>
   </section>
 
-  <!-- ══════════ 03. Метафора ОС ══════════ -->
+  <!-- ══════════ 03. diff: было → стало ══════════ -->
   <section class="snap">
     <div class="container">
-      <span class="snap-label">03 — модель работы</span>
+      <span class="snap-label">03 — diff: было → стало</span>
       <div class="section-head">
         <h2>Мышление — это операционная система</h2>
-        <p>Мы не «лечим душу» и не «открываем потоки энергии». Мы ищем логические ошибки в обработке входящих данных и заменяем их рабочими паттернами.</p>
+        <p>Мы не «лечим личность» и не стираем прошлое. Мы делаем точечный патч: находим ошибочную установку, локализуем её и заменяем на рабочую. В терминах git это выглядит так:</p>
       </div>
-      <div class="code-panel">
-        <div class="code-head"><span>cognitive_map.ts</span><span>read-only</span></div>
-        <div class="code-body">
-          <div class="row"><span class="cmt">// диагностическая карта: как КПТ-термины ложатся на системные</span></div>
-          <div class="row"><span class="kw">automatic_thought</span> → <span class="err">false_trigger</span>          <span class="cmt">// сработал на пустое событие</span></div>
-          <div class="row"><span class="kw">perfectionism</span>     → <span class="err">validation_threshold</span>  <span class="cmt">// завышенный порог сборки</span></div>
-          <div class="row"><span class="kw">procrastination</span>   → <span class="err">scheduler_deadlock</span>     <span class="cmt">// блокировка планировщика</span></div>
-          <div class="row"><span class="kw">rumination</span>        → <span class="err">memory_leak</span>            <span class="cmt">// утечка на фоновых процессах</span></div>
-          <div class="row"><span class="kw">burnout</span>           → <span class="err">cpu_throttling</span>         <span class="cmt">// троттлинг под нагрузкой</span></div>
-          <div class="row">&nbsp;</div>
-          <div class="row"><span class="cmt">// целевое состояние после рефакторинга</span></div>
-          <div class="row"><span class="fn">refactor</span>(thoughts) → <span class="str">stable_runtime</span>       <span class="cmt">// без простоя и перегрева</span></div>
+
+      <div class="diff-panel">
+        <div class="diff-head">
+          <span><i class="fas fa-code-branch"></i> git diff --staged mind/core/*.txt</span>
+          <span class="diff-stat">5 files changed · <span class="plus">+7</span> <span class="minus">−13</span></span>
+        </div>
+        <div class="diff-body">
+          <template x-for="(line, i) in diffLines" :key="i">
+            <div class="diff-line" :class="line.type">
+              <span class="ln" x-text="line.ln || ''"></span>
+              <span class="gut" x-text="line.gut || ''"></span>
+              <span class="code" x-text="line.text"></span>
+            </div>
+          </template>
         </div>
       </div>
-      <div class="mapping">
-        <div class="map-row"><span class="from">тревога</span><span class="arrow">→</span><span class="to">проверяемая гипотеза</span></div>
-        <div class="map-row"><span class="from">самокритика</span><span class="arrow">→</span><span class="to">code review без токсичности</span></div>
-        <div class="map-row"><span class="from">ступор</span><span class="arrow">→</span><span class="to">декомпозиция задачи</span></div>
-        <div class="map-row"><span class="from">выгорание</span><span class="arrow">→</span><span class="to">управление ресурсами</span></div>
-      </div>
+
+      <p style="margin-top:26px;color:var(--token-comment);font-family:var(--font-mono);font-size:.82rem;line-height:1.65;max-width:760px;">
+        <span style="color:var(--token-dracula);">//</span> 3–5 сессий = тот самый патч. Без магии, без «поработать над собой ещё годик» и без пакетов сессий на год вперёд.
+      </p>
     </div>
   </section>
 
@@ -652,8 +783,6 @@ class MindDebugger {
             <img src="./assets/images/cert2.png" alt="Сертификат ИППиП" loading="lazy">
           </div>
         </div>
-
-
 
         <div class="cert-pane" x-show="activeCert === 'erickson'" x-cloak>
           <div class="cert-meta">
@@ -868,6 +997,7 @@ function landingEngine() {
     nextId() { return ++this.__uid; },
     mkLine(obj) { return Object.assign({ id: this.nextId() }, obj); },
 
+    /* ── Termux panes ── */
     panes: [
       {
         label: 'identity',
@@ -915,6 +1045,54 @@ function landingEngine() {
         lines: [],
         bootDelay: 540
       }
+    ],
+
+    /* ── Diff panel (section 03) ── */
+    diffLines: [
+      /* ── File 1: perfectionism.txt ── */
+      { ln: 1, gut: '', type: 'file', text: '--- a/mind/perfectionism.txt    2026-10-16 09:12:34 +0300' },
+      { ln: 2, gut: '', type: 'file', text: '+++ b/mind/perfectionism.txt    2026-10-16 11:04:12 +0300' },
+      { ln: 3, gut: '', type: 'hunk', text: '@@ -1,3 +1,1 @@' },
+      { ln: 4, gut: '-', type: 'del',  text: 'Пока проект не идеален — показывать нельзя.' },
+      { ln: 5, gut: '-', type: 'del',  text: 'Люди заметят любую шероховатость и решат,' },
+      { ln: 6, gut: '-', type: 'del',  text: 'что я не умею работать.' },
+      { ln: 7, gut: '+', type: 'add',  text: 'Запускаю MVP на 80%. Цель — обратная связь, а не аплодисменты.' },
+
+      /* ── File 2: procrastination.txt ── */
+      { ln: 1, gut: '', type: 'file new-file', text: '--- a/mind/procrastination.txt    2026-10-16 09:12:34 +0300' },
+      { ln: 2, gut: '', type: 'file', text: '+++ b/mind/procrastination.txt    2026-10-16 11:04:12 +0300' },
+      { ln: 3, gut: '', type: 'hunk', text: '@@ -1,2 +1,2 @@' },
+      { ln: 4, gut: '-', type: 'del',  text: 'Сначала надо всё изучить до конца.' },
+      { ln: 5, gut: '-', type: 'del',  text: 'Начну, когда буду готов на 100%.' },
+      { ln: 6, gut: '+', type: 'add',  text: 'Действую с текущим уровнем знаний.' },
+      { ln: 7, gut: '+', type: 'add',  text: 'Незнание закрывается по ходу.' },
+
+      /* ── File 3: rumination.txt ── */
+      { ln: 1, gut: '', type: 'file new-file', text: '--- a/mind/rumination.txt    2026-10-16 09:12:34 +0300' },
+      { ln: 2, gut: '', type: 'file', text: '+++ b/mind/rumination.txt    2026-10-16 11:04:12 +0300' },
+      { ln: 3, gut: '', type: 'hunk', text: '@@ -1,3 +1,1 @@' },
+      { ln: 4, gut: '-', type: 'del',  text: 'Если бы я тогда ответил иначе — всё было бы по-другому.' },
+      { ln: 5, gut: '-', type: 'del',  text: 'Я до сих пор прокручиваю этот разговор.' },
+      { ln: 6, gut: '-', type: 'del',  text: 'Надо было сделать не так.' },
+      { ln: 7, gut: '+', type: 'add',  text: 'Прошлый диалог — данные для анализа, а не повод для вечного суда.' },
+
+      /* ── File 4: impostor.txt ── */
+      { ln: 1, gut: '', type: 'file new-file', text: '--- a/mind/impostor.txt    2026-10-16 09:12:34 +0300' },
+      { ln: 2, gut: '', type: 'file', text: '+++ b/mind/impostor.txt    2026-10-16 11:04:12 +0300' },
+      { ln: 3, gut: '', type: 'hunk', text: '@@ -1,2 +1,2 @@' },
+      { ln: 4, gut: '-', type: 'del',  text: 'Все вокруг умнее меня. Просто им повезло.' },
+      { ln: 5, gut: '-', type: 'del',  text: 'Рано или поздно все поймут, что я ничего не умею.' },
+      { ln: 6, gut: '+', type: 'add',  text: 'Мой опыт — не случайность.' },
+      { ln: 7, gut: '+', type: 'add',  text: 'Ошибки и пробелы не отменяют сделанного.' },
+
+      /* ── File 5: burnout.txt ── */
+      { ln: 1, gut: '', type: 'file new-file', text: '--- a/mind/burnout.txt    2026-10-16 09:12:34 +0300' },
+      { ln: 2, gut: '', type: 'file', text: '+++ b/mind/burnout.txt    2026-10-16 11:04:12 +0300' },
+      { ln: 3, gut: '', type: 'hunk', text: '@@ -1,3 +1,1 @@' },
+      { ln: 4, gut: '-', type: 'del',  text: 'Отдохну, когда закончу этот проект.' },
+      { ln: 5, gut: '-', type: 'del',  text: 'Ещё один рывок — и потом точно выдохну.' },
+      { ln: 6, gut: '-', type: 'del',  text: 'Я не имею права останавливаться.' },
+      { ln: 7, gut: '+', type: 'add',  text: 'Отдых — не награда после работы, а часть рабочего процесса.' }
     ],
 
     activeCert: 'ippip-diploma',
