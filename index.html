@@ -491,183 +491,189 @@ p{margin:0 0 16px;color:var(--token-text);}
   .protocols-table td:last-child{font-size:.72rem;}
 }
 
-/* ─── kanban board (section 06) ─── */
-.kanban-status{
-  display:flex;flex-wrap:wrap;
-  gap:10px 22px;
-  padding:13px 18px;
-  margin-top:20px;
-  background:var(--ide-panel);
-  border:1px solid var(--ide-border);
-  border-radius:10px;
-  font-family:var(--font-mono);
-  font-size:.78rem;
-  color:var(--token-comment);
-}
-.kanban-status span{
-  display:inline-flex;align-items:center;gap:8px;
-  white-space:nowrap;
-}
-.kanban-status i{font-size:.85em;}
-.kanban-status span:nth-child(1) i{color:var(--token-keyword);}
-.kanban-status span:nth-child(2) i{color:var(--token-string);}
-.kanban-status span:nth-child(3) i{color:var(--token-error);}
-.kanban-status span:nth-child(4) i{color:var(--token-dracula);}
-
-.kanban{
-  display:grid;
-  grid-template-columns:1fr;
-  gap:14px;
-  margin-top:18px;
-}
-@media (min-width:680px){ .kanban{grid-template-columns:repeat(2,1fr);} }
-@media (min-width:1080px){ .kanban{grid-template-columns:repeat(4,1fr);} }
-
-.kanban-col{
-  background:var(--ide-panel);
+/* ─── traceroute window (section 06) ─── */
+.trace-window{
+  margin-top:24px;
+  background:#0A0C10;
   border:1px solid var(--ide-border);
   border-radius:12px;
   overflow:hidden;
-  display:flex;
-  flex-direction:column;
-  position:relative;
+  font-family:var(--font-mono);
+  box-shadow:0 12px 44px rgba(0,0,0,.5), inset 0 1px 0 rgba(255,255,255,.02);
 }
-.kanban-col::before{
-  content:'';
-  position:absolute;top:0;left:0;right:0;
-  height:2px;
-  background:var(--token-comment);
-  opacity:.45;
-}
-.kanban-col.col-todo::before{background:var(--token-keyword);opacity:1;}
-.kanban-col.col-progress::before{background:var(--token-dracula);opacity:1;}
-.kanban-col.col-done::before{background:var(--token-string);opacity:1;}
+.trace-window .termux-bar{margin:0;border-radius:0;border-bottom:1px solid var(--ide-border);}
 
-.kanban-col-head{
-  display:flex;align-items:center;justify-content:space-between;
-  gap:10px;
-  padding:11px 14px;
-  background:var(--ide-panel-2);
+.trace-tabs{
+  display:flex;
+  overflow-x:auto;
   border-bottom:1px solid var(--ide-border);
-  font-family:var(--font-mono);
-  font-size:.72rem;
-  text-transform:uppercase;
-  letter-spacing:.1em;
-  color:var(--token-comment);
-}
-.kanban-col-head .count{
-  font-size:.7rem;
-  padding:1px 7px;
-  border:1px solid var(--ide-border);
-  border-radius:4px;
-  background:var(--ide-bg);
-  color:var(--token-comment);
-  letter-spacing:.04em;
-}
-.col-todo .kanban-col-head .count{color:var(--token-keyword);border-color:rgba(204,120,50,.32);}
-.col-progress .kanban-col-head .count{color:var(--token-dracula);border-color:rgba(255,121,198,.32);}
-.col-done .kanban-col-head .count{color:var(--token-string);border-color:rgba(106,135,89,.35);}
-
-.kanban-col-body{
-  padding:10px;
-  display:flex;
-  flex-direction:column;
-  gap:8px;
-  flex-grow:1;
-}
-
-.kcard{
-  background:var(--ide-bg);
-  border:1px solid var(--ide-border);
-  border-radius:8px;
-  padding:10px 12px;
-  font-family:var(--font-mono);
-  font-size:.78rem;
-  transition:border-color .2s,transform .15s;
-}
-.kcard:hover{border-color:var(--token-dracula);transform:translateY(-1px);}
-
-.kcard-tag{
-  display:inline-flex;align-items:center;gap:5px;
-  font-size:.62rem;
-  font-weight:600;
-  letter-spacing:.06em;
-  padding:1px 7px;
-  border-radius:3px;
-  margin-bottom:6px;
-  background:rgba(255,255,255,.04);
-  color:var(--token-comment);
-  border:1px solid var(--ide-border);
-}
-.kcard-name{
-  font-family:var(--font-sans);
-  font-size:.86rem;
-  font-weight:600;
-  color:#fff;
-  line-height:1.3;
-  margin-bottom:4px;
-  letter-spacing:-.005em;
-}
-.kcard-desc{
-  font-size:.72rem;
-  color:var(--token-comment);
-  line-height:1.5;
-}
-
-/* To Do cards */
-.col-todo .kcard-tag{color:var(--token-keyword);border-color:rgba(204,120,50,.35);background:rgba(204,120,50,.06);}
-
-/* In Progress card */
-.kcard.active{
-  border-color:rgba(255,121,198,.4);
-  background:rgba(255,121,198,.04);
-  box-shadow:0 0 0 1px rgba(255,121,198,.08) inset;
-}
-.kcard.active .kcard-tag{color:var(--token-dracula);border-color:rgba(255,121,198,.4);background:rgba(255,121,198,.08);}
-.kcard.active .kcard-name{color:var(--token-dracula);}
-
-/* Done card */
-.kcard.done{
-  border-color:rgba(106,135,89,.4);
-  background:rgba(106,135,89,.05);
-}
-.kcard.done .kcard-tag{color:var(--token-string);border-color:rgba(106,135,89,.4);background:rgba(106,135,89,.1);}
-.kcard.done .kcard-name{color:var(--token-string);}
-.kcard.done .kcard-desc{color:var(--token-text);opacity:.92;}
-
-/* Locked (backlog) */
-.kcard.locked{opacity:.72;}
-.kcard.locked:hover{border-color:var(--token-error);opacity:.92;}
-.kcard.locked .kcard-tag{
-  color:var(--token-error);
-  border-color:rgba(255,85,85,.32);
-  background:rgba(255,85,85,.06);
-}
-
-/* Safe-net note under board */
-.kanban-footer{
-  margin-top:20px;
-  padding:13px 16px;
   background:var(--ide-panel);
-  border:1px dashed var(--ide-border);
-  border-radius:10px;
-  font-family:var(--font-mono);
-  font-size:.76rem;
-  color:var(--token-comment);
-  line-height:1.6;
-  display:flex;
-  align-items:flex-start;
-  gap:12px;
+  scrollbar-width:thin;
 }
-.kanban-footer i{color:var(--token-string);margin-top:2px;flex-shrink:0;font-size:.9em;}
-.kanban-footer strong{color:var(--token-string);font-weight:600;}
+.trace-tabs::-webkit-scrollbar{height:4px;}
+.trace-tabs::-webkit-scrollbar-thumb{background:var(--ide-border);border-radius:2px;}
 
+.trace-tab{
+  background:none;border:none;border-right:1px solid var(--ide-border);
+  padding:11px 15px;
+  font-family:var(--font-mono);font-size:.74rem;
+  color:var(--token-comment);
+  cursor:pointer;white-space:nowrap;
+  display:flex;align-items:center;gap:7px;
+  transition:.2s;position:relative;flex-shrink:0;
+}
+.trace-tab:hover{color:var(--token-text);background:rgba(255,255,255,.02);}
+.trace-tab.active{color:var(--token-keyword);background:var(--ide-bg);}
+.trace-tab.active::after{
+  content:'';position:absolute;left:0;right:0;bottom:0;height:2px;
+  background:var(--token-keyword);
+}
+.trace-tab i{font-size:.82em;opacity:.85;}
+.trace-tab.active i{opacity:1;}
+.trace-tab .tab-count{
+  font-size:.6rem;padding:0 5px;
+  border:1px solid var(--ide-border);border-radius:3px;
+  color:var(--token-comment);letter-spacing:.02em;
+}
+.trace-tab.active .tab-count{
+  color:var(--token-keyword);border-color:rgba(204,120,50,.45);
+}
+
+.trace-pane{padding:14px 14px 16px;}
+.trace-cmd{
+  color:var(--token-text);font-size:.78rem;
+  padding-bottom:10px;margin-bottom:12px;
+  border-bottom:1px solid rgba(255,255,255,.05);
+  line-height:1.6;word-break:break-word;
+}
+.trace-cmd .prompt{color:var(--token-dracula);margin-right:8px;font-weight:600;}
+.trace-cmd .args{color:var(--token-keyword);}
+
+.trace-success{
+  display:flex;gap:10px;align-items:flex-start;
+  padding:10px 12px;
+  background:rgba(106,135,89,.06);
+  border:1px solid rgba(106,135,89,.28);
+  border-radius:8px;
+  font-size:.74rem;line-height:1.55;
+  color:var(--token-text);
+  margin-bottom:12px;
+}
+.trace-success i{
+  color:var(--token-string);flex-shrink:0;margin-top:2px;font-size:.9em;
+}
+.trace-success strong{color:var(--token-string);font-weight:600;}
+
+.trace-hint{
+  color:var(--token-comment);font-size:.7rem;
+  font-style:italic;opacity:.75;
+  margin-bottom:12px;line-height:1.5;
+}
+
+.trace-row{
+  display:grid;
+  grid-template-columns:auto 1fr;
+  gap:10px;
+  padding:11px 0;
+  border-bottom:1px dashed rgba(255,255,255,.04);
+  align-items:start;
+}
+.trace-row:last-child{border-bottom:none;}
+
+.trace-hop{
+  font-size:.7rem;color:var(--token-comment);
+  padding-top:2px;min-width:22px;
+  opacity:.55;letter-spacing:.02em;
+}
+.trace-row.active .trace-hop{color:var(--token-dracula);opacity:1;}
+.trace-row.locked .trace-hop{opacity:.35;}
+
+.trace-main{min-width:0;}
+
+.trace-host{
+  display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;
+  margin-bottom:4px;
+}
+.trace-code{
+  color:var(--token-keyword);font-size:.7rem;
+  font-weight:700;letter-spacing:.02em;
+}
+.trace-name{
+  color:#fff;font-weight:500;font-size:.84rem;
+  font-family:var(--font-mono);letter-spacing:-.005em;
+}
+.trace-row.active .trace-name{color:var(--token-dracula);}
+.trace-row.locked .trace-name{color:var(--token-comment);}
+
+.trace-desc{
+  color:var(--token-comment);font-size:.72rem;
+  line-height:1.55;margin-bottom:6px;
+}
+.trace-row.locked .trace-desc{opacity:.7;}
+
+.trace-meta{
+  display:flex;flex-wrap:wrap;align-items:center;gap:8px;
+  font-size:.68rem;color:var(--token-comment);
+}
+.trace-meta .sess{color:var(--token-string);}
+.trace-meta .sess.dim{color:var(--token-comment);opacity:.7;}
+
+.trace-badge{
+  display:inline-flex;align-items:center;gap:5px;
+  padding:1px 7px;border-radius:3px;
+  font-size:.62rem;font-weight:600;letter-spacing:.05em;
+  border:1px solid;white-space:nowrap;
+}
+.trace-badge.active{
+  color:var(--token-dracula);border-color:rgba(255,121,198,.4);
+  background:rgba(255,121,198,.06);
+}
+.trace-badge.done{
+  color:var(--token-string);border-color:rgba(106,135,89,.4);
+  background:rgba(106,135,89,.06);
+}
+.trace-badge.queued{
+  color:var(--token-comment);border-color:var(--ide-border);
+  background:rgba(255,255,255,.02);
+}
+.trace-badge.locked{
+  color:var(--token-error);border-color:rgba(255,85,85,.32);
+  background:rgba(255,85,85,.04);
+}
+.trace-badge.always{
+  color:var(--token-keyword);border-color:rgba(204,120,50,.4);
+  background:rgba(204,120,50,.05);
+}
+
+.trace-rule{
+  padding:14px 14px 12px;
+  border-top:1px solid var(--ide-border);
+  background:rgba(30,31,34,.5);
+  font-size:.72rem;
+  color:var(--token-text);
+  line-height:1.55;
+  display:flex;gap:10px;align-items:flex-start;
+}
+.trace-rule i{
+  color:var(--token-keyword);flex-shrink:0;
+  margin-top:2px;font-size:.9em;
+}
+.trace-rule strong{color:#fff;font-weight:600;}
+
+/* mobile: keep meta inline below, tight but readable */
 @media (max-width:600px){
-  .kanban-status{font-size:.72rem;gap:8px 16px;padding:11px 14px;}
-  .kanban-col-head{font-size:.68rem;padding:10px 12px;}
-  .kcard{padding:9px 11px;}
-  .kcard-name{font-size:.82rem;}
-  .kcard-desc{font-size:.7rem;}
+  .trace-pane{padding:12px 12px 14px;}
+  .trace-tab{padding:10px 12px;font-size:.7rem;}
+  .trace-tab .tab-count{font-size:.58rem;}
+  .trace-cmd{font-size:.72rem;}
+  .trace-hint{font-size:.66rem;}
+  .trace-row{grid-template-columns:18px 1fr;gap:8px;padding:10px 0;}
+  .trace-hop{min-width:18px;font-size:.66rem;}
+  .trace-name{font-size:.8rem;}
+  .trace-desc{font-size:.68rem;}
+  .trace-meta{font-size:.64rem;}
+  .trace-badge{font-size:.58rem;}
+  .trace-rule{font-size:.68rem;padding:12px;}
 }
 
 .mapping{display:grid;grid-template-columns:1fr;gap:14px;margin-top:28px;}
@@ -1213,147 +1219,432 @@ class MindDebugger {
     </div>
   </section>
 
-  <!-- ══════════ 06. Kanban манифест ══════════ -->
+  <!-- ══════════ 06. Traceroute манифест ══════════ -->
   <section>
     <div class="container">
       <span class="snap-label">06 — манифест сборки</span>
       <div class="section-head">
-        <h2>Маршрут как kanban-доска</h2>
-        <p>Не «набор сессий», а сборка по модулям с явными критериями готовности. База — 6 модулей строго по порядку. Опции открываются только после M1–M5: без собранного дебаггера профильные протоколы не работают.</p>
+        <h2>Маршрут: 6 hops до автономии</h2>
+        <p>Не «набор сессий», а сборка по модулям. База — 6 шагов строго по порядку. IT-ветки и опции открываются только после M1–M5: без собранного дебаггера они не работают.</p>
       </div>
 
-      <div class="kanban-status">
-        <span><i class="fas fa-coins"></i> 3 000 ₽ / 50 мин</span>
-        <span><i class="fas fa-cubes"></i> base: 6 modules</span>
-        <span><i class="fas fa-lock"></i> options: unlock after M1–M5</span>
-        <span><i class="fas fa-toolbox"></i> output: autonomous debugger</span>
+      <div class="trace-window" x-data="{ activeTab: 'base' }">
+        <div class="termux-bar">
+          <div class="termux-bar-left">
+            <i class="fas fa-terminal"></i>
+            <span class="title">cognitive_refactoring</span>
+            <span class="dim">— build_manifest</span>
+          </div>
+          <div class="termux-bar-right">
+            <span class="termux-badge">3 SCREENS</span>
+            <div class="termux-dots"><span></span><span></span><span></span></div>
+          </div>
+        </div>
+
+        <div class="trace-tabs">
+          <button type="button" class="trace-tab" :class="{ 'active': activeTab === 'base' }" @click="activeTab = 'base'">
+            <i class="fas fa-route"></i> base_track
+            <span class="tab-count">6</span>
+          </button>
+          <button type="button" class="trace-tab" :class="{ 'active': activeTab === 'it' }" @click="activeTab = 'it'">
+            <i class="fas fa-code-branch"></i> it_specializations
+            <span class="tab-count">9</span>
+          </button>
+          <button type="button" class="trace-tab" :class="{ 'active': activeTab === 'optional' }" @click="activeTab = 'optional'">
+            <i class="fas fa-puzzle-piece"></i> optional_modules
+            <span class="tab-count">8</span>
+          </button>
+        </div>
+
+        <!-- ═════ SCREEN 1: BASE ═════ -->
+        <div class="trace-pane" x-show="activeTab === 'base'">
+          <div class="trace-cmd">
+            <span class="prompt">$</span> traceroute mind.base_track --format=sessions
+          </div>
+
+          <div class="trace-success">
+            <i class="fas fa-check"></i>
+            <div><strong>init_commit — уже в Done.</strong> Ты открыл, прочитал, пришёл. Первый коммит в собственную прошивку уже сделан — уговаривать себя начать больше не нужно.</div>
+          </div>
+
+          <div class="trace-hint">Tracing route to autonomous_debugger.mind (6 hops max, 50 min per hop)</div>
+
+          <div class="trace-row active">
+            <div class="trace-hop">1</div>
+            <div class="trace-main">
+              <div class="trace-host">
+                <span class="trace-code">M1</span>
+                <span class="trace-name">entry_point</span>
+              </div>
+              <div class="trace-desc">Когнитивная модель: ситуация → мысль → эмоция → поведение. Измеримая цель. Контракт.</div>
+              <div class="trace-meta">
+                <span class="sess">1–2 sess</span>
+                <span class="trace-badge active"><i class="fas fa-circle-play"></i>ACTIVE</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="trace-row">
+            <div class="trace-hop">2</div>
+            <div class="trace-main">
+              <div class="trace-host">
+                <span class="trace-code">M2</span>
+                <span class="trace-name">emotions_monitor</span>
+              </div>
+              <div class="trace-desc">Словарь конкретных эмоций вместо «мне плохо». Личные триггеры. Дневник наблюдений.</div>
+              <div class="trace-meta">
+                <span class="sess">1–2 sess</span>
+                <span class="trace-badge queued">queued</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="trace-row">
+            <div class="trace-hop">3</div>
+            <div class="trace-main">
+              <div class="trace-host">
+                <span class="trace-code">M3</span>
+                <span class="trace-name">thought_detector</span>
+              </div>
+              <div class="trace-desc">Автоматические мысли. СМЭР. «Горячая мысль». Отделение факта от интерпретации.</div>
+              <div class="trace-meta">
+                <span class="sess">2–3 sess</span>
+                <span class="trace-badge queued">queued</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="trace-row">
+            <div class="trace-hop">4</div>
+            <div class="trace-main">
+              <div class="trace-host">
+                <span class="trace-code">M4</span>
+                <span class="trace-name">cognitive_restructure</span>
+              </div>
+              <div class="trace-desc">Искажения: катастрофизация, чтение мыслей, всё-или-ничего. Доказательства за/против. Альтернатива.</div>
+              <div class="trace-meta">
+                <span class="sess">2–3 sess</span>
+                <span class="trace-badge queued">queued</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="trace-row">
+            <div class="trace-hop">5</div>
+            <div class="trace-main">
+              <div class="trace-host">
+                <span class="trace-code">M5</span>
+                <span class="trace-name">behavioral_experiments</span>
+              </div>
+              <div class="trace-desc">Экспозиция. Иерархия шагов. Проверка убеждений действием, а не в голове.</div>
+              <div class="trace-meta">
+                <span class="sess">2–3 sess</span>
+                <span class="trace-badge queued">queued</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="trace-row">
+            <div class="trace-hop">6</div>
+            <div class="trace-main">
+              <div class="trace-host">
+                <span class="trace-code">M6</span>
+                <span class="trace-name">autonomous_debugger</span>
+              </div>
+              <div class="trace-desc">Личная «аптечка» техник. Ранние признаки ухудшения. План профилактики на 1 страницу.</div>
+              <div class="trace-meta">
+                <span class="sess">1–2 sess</span>
+                <span class="trace-badge queued">queued</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ═════ SCREEN 2: IT SPECIALIZATIONS ═════ -->
+        <div class="trace-pane" x-show="activeTab === 'it'" x-cloak>
+          <div class="trace-cmd">
+            <span class="prompt">$</span> traceroute mind.it_specializations --requires=M1..M5
+          </div>
+          <div class="trace-hint">Parallel branches. Unlocked after base track M1–M5.</div>
+
+          <div class="trace-row locked">
+            <div class="trace-hop">└1</div>
+            <div class="trace-main">
+              <div class="trace-host">
+                <span class="trace-code">BR-01</span>
+                <span class="trace-name">burnout_recovery</span>
+              </div>
+              <div class="trace-desc">Восстановление ресурсов и смысла. Дневник энергии. Колесо баланса. Границы.</div>
+              <div class="trace-meta">
+                <span class="sess">2–3 sess</span>
+                <span class="trace-badge locked"><i class="fas fa-lock"></i>LOCKED</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="trace-row locked">
+            <div class="trace-hop">└2</div>
+            <div class="trace-main">
+              <div class="trace-host">
+                <span class="trace-code">BR-02</span>
+                <span class="trace-name">procrastination</span>
+              </div>
+              <div class="trace-desc">Микрошаги. «5 минут». СМЭР для мыслей, мешающих начать. Поведенческая активация.</div>
+              <div class="trace-meta">
+                <span class="sess">2 sess</span>
+                <span class="trace-badge locked"><i class="fas fa-lock"></i>LOCKED</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="trace-row locked">
+            <div class="trace-hop">└3</div>
+            <div class="trace-main">
+              <div class="trace-host">
+                <span class="trace-code">BR-03</span>
+                <span class="trace-name">fear_of_shipping</span>
+              </div>
+              <div class="trace-desc">Страх запуска. Катастрофизация критики. MVP-эксперимент. Критерий «достаточно хорошего».</div>
+              <div class="trace-meta">
+                <span class="sess">2–3 sess</span>
+                <span class="trace-badge locked"><i class="fas fa-lock"></i>LOCKED</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="trace-row locked">
+            <div class="trace-hop">└4</div>
+            <div class="trace-main">
+              <div class="trace-host">
+                <span class="trace-code">BR-04</span>
+                <span class="trace-name">impostor_syndrome</span>
+              </div>
+              <div class="trace-desc">Копилка достижений. Реструктуризация «это случайность». Принятие компетентности.</div>
+              <div class="trace-meta">
+                <span class="sess">2 sess</span>
+                <span class="trace-badge locked"><i class="fas fa-lock"></i>LOCKED</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="trace-row locked">
+            <div class="trace-hop">└5</div>
+            <div class="trace-main">
+              <div class="trace-host">
+                <span class="trace-code">BR-05</span>
+                <span class="trace-name">career_uncertainty</span>
+              </div>
+              <div class="trace-desc">Кризис проф. самоопределения. Ценности, карта карьеры, эксперимент с новой ролью.</div>
+              <div class="trace-meta">
+                <span class="sess">2–3 sess</span>
+                <span class="trace-badge locked"><i class="fas fa-lock"></i>LOCKED</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="trace-row locked">
+            <div class="trace-hop">└6</div>
+            <div class="trace-main">
+              <div class="trace-host">
+                <span class="trace-code">BR-06</span>
+                <span class="trace-name">professional_anxiety</span>
+              </div>
+              <div class="trace-desc">Продакшн, собеседования, дедлайны. Иерархия тревоги. Экспозиция. Телесная регуляция.</div>
+              <div class="trace-meta">
+                <span class="sess">2–3 sess</span>
+                <span class="trace-badge locked"><i class="fas fa-lock"></i>LOCKED</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="trace-row locked">
+            <div class="trace-hop">└7</div>
+            <div class="trace-main">
+              <div class="trace-host">
+                <span class="trace-code">BR-07</span>
+                <span class="trace-name">perfectionism</span>
+              </div>
+              <div class="trace-desc">«Должен» → «предпочитаю». Эксперимент с неидеальным результатом. Самопринятие.</div>
+              <div class="trace-meta">
+                <span class="sess">2–3 sess</span>
+                <span class="trace-badge locked"><i class="fas fa-lock"></i>LOCKED</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="trace-row locked">
+            <div class="trace-hop">└8</div>
+            <div class="trace-main">
+              <div class="trace-host">
+                <span class="trace-code">BR-08</span>
+                <span class="trace-name">team_conflicts</span>
+              </div>
+              <div class="trace-desc">Ассертивность, я-высказывания, границы без разрушения отношений.</div>
+              <div class="trace-meta">
+                <span class="sess">1–2 sess</span>
+                <span class="trace-badge locked"><i class="fas fa-lock"></i>LOCKED</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="trace-row locked">
+            <div class="trace-hop">└9</div>
+            <div class="trace-main">
+              <div class="trace-host">
+                <span class="trace-code">BR-09</span>
+                <span class="trace-name">work_life_balance</span>
+              </div>
+              <div class="trace-desc">Ритуалы переключения. Границы рабочего времени. Восстановление.</div>
+              <div class="trace-meta">
+                <span class="sess">1–2 sess</span>
+                <span class="trace-badge locked"><i class="fas fa-lock"></i>LOCKED</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ═════ SCREEN 3: OPTIONAL MODULES ═════ -->
+        <div class="trace-pane" x-show="activeTab === 'optional'" x-cloak>
+          <div class="trace-cmd">
+            <span class="prompt">$</span> traceroute mind.optional_modules --deep
+          </div>
+          <div class="trace-hint">Deeper work. Unlocked after base track M1–M5. M14 — always available.</div>
+
+          <div class="trace-row locked">
+            <div class="trace-hop">7</div>
+            <div class="trace-main">
+              <div class="trace-host">
+                <span class="trace-code">M7</span>
+                <span class="trace-name">values_and_motivation</span>
+              </div>
+              <div class="trace-desc">Контакт с личными ценностями. Сильные стороны. Поведение из ценностей, а не из избегания боли.</div>
+              <div class="trace-meta">
+                <span class="sess">2 sess</span>
+                <span class="trace-badge locked"><i class="fas fa-lock"></i>LOCKED</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="trace-row locked">
+            <div class="trace-hop">8</div>
+            <div class="trace-main">
+              <div class="trace-host">
+                <span class="trace-code">M8</span>
+                <span class="trace-name">acceptance_defusion</span>
+              </div>
+              <div class="trace-desc">Третья волна КПТ (ACT, MBCT). Наблюдение за мыслью. Дефузия. Осознанность в повседневности.</div>
+              <div class="trace-meta">
+                <span class="sess">2–3 sess</span>
+                <span class="trace-badge locked"><i class="fas fa-lock"></i>LOCKED</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="trace-row locked">
+            <div class="trace-hop">9</div>
+            <div class="trace-main">
+              <div class="trace-host">
+                <span class="trace-code">M9</span>
+                <span class="trace-name">anxiety_panic</span>
+              </div>
+              <div class="trace-desc">Иерархия страха. Экспозиция. Отказ от защитного поведения. Принятие физических симптомов.</div>
+              <div class="trace-meta">
+                <span class="sess">2–3 sess</span>
+                <span class="trace-badge locked"><i class="fas fa-lock"></i>LOCKED</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="trace-row locked">
+            <div class="trace-hop">10</div>
+            <div class="trace-main">
+              <div class="trace-host">
+                <span class="trace-code">M10</span>
+                <span class="trace-name">anger_irritation</span>
+              </div>
+              <div class="trace-desc">Здоровый гнев vs ярость. Триггеры. Ассертивность. Регуляция в моменте.</div>
+              <div class="trace-meta">
+                <span class="sess">2 sess</span>
+                <span class="trace-badge locked"><i class="fas fa-lock"></i>LOCKED</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="trace-row locked">
+            <div class="trace-hop">11</div>
+            <div class="trace-main">
+              <div class="trace-host">
+                <span class="trace-code">M11</span>
+                <span class="trace-name">shame_guilt</span>
+              </div>
+              <div class="trace-desc">Вина («сделал плохо») vs стыд («я плохой»). Аргументы против ложной вины. Внутренний критик.</div>
+              <div class="trace-meta">
+                <span class="sess">2 sess</span>
+                <span class="trace-badge locked"><i class="fas fa-lock"></i>LOCKED</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="trace-row locked">
+            <div class="trace-hop">12</div>
+            <div class="trace-main">
+              <div class="trace-host">
+                <span class="trace-code">M12</span>
+                <span class="trace-name">self_esteem_compassion</span>
+              </div>
+              <div class="trace-desc">Отказ от глобальных ярлыков. «Ответ лучшему другу». Принятие несовершенства.</div>
+              <div class="trace-meta">
+                <span class="sess">2 sess</span>
+                <span class="trace-badge locked"><i class="fas fa-lock"></i>LOCKED</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="trace-row locked">
+            <div class="trace-hop">13</div>
+            <div class="trace-main">
+              <div class="trace-host">
+                <span class="trace-code">M13</span>
+                <span class="trace-name">relationships_assertiveness</span>
+              </div>
+              <div class="trace-desc">Пассивное / агрессивное / ассертивное. Я-высказывания. Границы без разрушения отношений.</div>
+              <div class="trace-meta">
+                <span class="sess">2 sess</span>
+                <span class="trace-badge locked"><i class="fas fa-lock"></i>LOCKED</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="trace-row">
+            <div class="trace-hop">14</div>
+            <div class="trace-main">
+              <div class="trace-host">
+                <span class="trace-code">M14</span>
+                <span class="trace-name">crisis_safety</span>
+              </div>
+              <div class="trace-desc">Отдельный контур. Доступен на любом шаге, даже без прохождения базы. Ранние признаки, контакты, план выхода из кризиса.</div>
+              <div class="trace-meta">
+                <span class="sess dim">always-on</span>
+                <span class="trace-badge always"><i class="fas fa-shield-halved"></i>ALWAYS</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="trace-rule">
+          <i class="fas fa-lock"></i>
+          <div>
+            <strong>Опции и IT-ветки — только после M1–M5.</strong> Профильные протоколы требуют уже собранного дебаггера: без него они не работают. M14 — вне очереди, доступен сразу.
+          </div>
+        </div>
       </div>
 
-      <div class="kanban">
-        <!-- ═══ BACKLOG ═══ -->
-        <div class="kanban-col col-backlog">
-          <div class="kanban-col-head">
-            <span>backlog</span>
-            <span class="count">7</span>
-          </div>
-          <div class="kanban-col-body">
-            <article class="kcard locked">
-              <div class="kcard-tag"><i class="fas fa-lock"></i> M7</div>
-              <div class="kcard-name">Ценности и мотивация</div>
-              <div class="kcard-desc">Сильные стороны, поведение из ценностей.</div>
-            </article>
-            <article class="kcard locked">
-              <div class="kcard-tag"><i class="fas fa-lock"></i> M8</div>
-              <div class="kcard-name">Принятие и осознанность</div>
-              <div class="kcard-desc">Дефузия, третья волна КПТ (ACT / MBCT).</div>
-            </article>
-            <article class="kcard locked">
-              <div class="kcard-tag"><i class="fas fa-lock"></i> M9</div>
-              <div class="kcard-name">Тревога и паника</div>
-              <div class="kcard-desc">Иерархия страха, экспозиция, отказ от избегания.</div>
-            </article>
-            <article class="kcard locked">
-              <div class="kcard-tag"><i class="fas fa-lock"></i> M10</div>
-              <div class="kcard-name">Гнев и раздражение</div>
-              <div class="kcard-desc">Триггеры, регуляция в моменте, ассертивность.</div>
-            </article>
-            <article class="kcard locked">
-              <div class="kcard-tag"><i class="fas fa-lock"></i> M11</div>
-              <div class="kcard-name">Стыд и вина</div>
-              <div class="kcard-desc">Различение вины и стыда, работа с внутренним критиком.</div>
-            </article>
-            <article class="kcard locked">
-              <div class="kcard-tag"><i class="fas fa-lock"></i> M12</div>
-              <div class="kcard-name">Самооценка и самосострадание</div>
-              <div class="kcard-desc">Самопринятие, «ответ лучшему другу».</div>
-            </article>
-            <article class="kcard locked">
-              <div class="kcard-tag"><i class="fas fa-lock"></i> M13</div>
-              <div class="kcard-name">Отношения и ассертивность</div>
-              <div class="kcard-desc">Я-высказывания, границы без разрушения отношений.</div>
-            </article>
-          </div>
-        </div>
-
-        <!-- ═══ TO DO ═══ -->
-        <div class="kanban-col col-todo">
-          <div class="kanban-col-head">
-            <span>to do</span>
-            <span class="count">5</span>
-          </div>
-          <div class="kanban-col-body">
-            <article class="kcard">
-              <div class="kcard-tag">M2</div>
-              <div class="kcard-name">Эмоции и мониторинг</div>
-              <div class="kcard-desc">Словарь эмоций, личные триггеры, дневник наблюдений.</div>
-            </article>
-            <article class="kcard">
-              <div class="kcard-tag">M3</div>
-              <div class="kcard-name">Детектор мыслей (СМЭР)</div>
-              <div class="kcard-desc">Автоматические мысли, «горячая мысль», факт vs интерпретация.</div>
-            </article>
-            <article class="kcard">
-              <div class="kcard-tag">M4</div>
-              <div class="kcard-name">Проверка на реальность</div>
-              <div class="kcard-desc">Искажения, доказательства за/против, альтернатива.</div>
-            </article>
-            <article class="kcard">
-              <div class="kcard-tag">M5</div>
-              <div class="kcard-name">Тест-драйв новых действий</div>
-              <div class="kcard-desc">Поведенческие эксперименты, экспозиция, шаги.</div>
-            </article>
-            <article class="kcard">
-              <div class="kcard-tag">M6</div>
-              <div class="kcard-name">Личный инструментарий</div>
-              <div class="kcard-desc">Аптечка техник, ранние признаки, план профилактики.</div>
-            </article>
-          </div>
-        </div>
-
-        <!-- ═══ IN PROGRESS ═══ -->
-        <div class="kanban-col col-progress">
-          <div class="kanban-col-head">
-            <span>in progress</span>
-            <span class="count">1</span>
-          </div>
-          <div class="kanban-col-body">
-            <article class="kcard active">
-              <div class="kcard-tag"><i class="fas fa-circle-play"></i> M1 · ACTIVE</div>
-              <div class="kcard-name">Точка входа и карта</div>
-              <div class="kcard-desc">Когнитивная модель, измеримая цель, контракт. 1–2 сессии — и вскрываем следующий слой.</div>
-            </article>
-          </div>
-        </div>
-
-        <!-- ═══ DONE ═══ -->
-        <div class="kanban-col col-done">
-          <div class="kanban-col-head">
-            <span>done</span>
-            <span class="count">1</span>
-          </div>
-          <div class="kanban-col-body">
-            <article class="kcard done">
-              <div class="kcard-tag"><i class="fas fa-check"></i> DONE</div>
-              <div class="kcard-name">init_commit()</div>
-              <div class="kcard-desc">Больше не нужно уговаривать себя начать — ты уже начал. Открыл, прочитал, пришёл. Это и есть первый коммит в собственную прошивку.</div>
-            </article>
-          </div>
-        </div>
-      </div>
-
-      <div class="kanban-footer">
-        <i class="fas fa-shield-halved"></i>
-        <div>
-          <strong>M14 · Кризисная безопасность</strong> — отдельный контур, доступен всегда: до старта, в процессе, после завершения. Не «модуль», а страховка — ранние признаки, контакты, план выхода из кризиса. Прохождения базы не требует.
-        </div>
-      </div>
-
-      <p style="margin-top:26px;color:var(--token-comment);font-family:var(--font-mono);font-size:.82rem;line-height:1.65;max-width:760px;">
-        <span style="color:var(--token-dracula);">//</span> Специализированные ветки под запрос: выгорание, прокрастинация, страх запуска, синдром самозванца, карьерные развилки, профессиональная тревожность, перфекционизм, командные конфликты, work-life balance. Открываются после M1–M5.
+      <p style="margin-top:24px;color:var(--token-comment);font-family:var(--font-mono);font-size:.8rem;line-height:1.65;max-width:760px;">
+        <span style="color:var(--token-dracula);">//</span> 3 000 ₽ / 50 минут. Оплата за конкретную сессию. Никаких пакетов вперёд.
       </p>
     </div>
   </section>
-  
+
   <!-- ══════════ 07. Рантайм ══════════ -->
   <section id="contact">
     <div class="container">
