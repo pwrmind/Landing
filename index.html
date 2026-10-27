@@ -491,102 +491,183 @@ p{margin:0 0 16px;color:var(--token-text);}
   .protocols-table td:last-child{font-size:.72rem;}
 }
 
-/* ─── pricing tiers (section 06) ─── */
-.tiers{
+/* ─── kanban board (section 06) ─── */
+.kanban-status{
+  display:flex;flex-wrap:wrap;
+  gap:10px 22px;
+  padding:13px 18px;
+  margin-top:20px;
+  background:var(--ide-panel);
+  border:1px solid var(--ide-border);
+  border-radius:10px;
+  font-family:var(--font-mono);
+  font-size:.78rem;
+  color:var(--token-comment);
+}
+.kanban-status span{
+  display:inline-flex;align-items:center;gap:8px;
+  white-space:nowrap;
+}
+.kanban-status i{font-size:.85em;}
+.kanban-status span:nth-child(1) i{color:var(--token-keyword);}
+.kanban-status span:nth-child(2) i{color:var(--token-string);}
+.kanban-status span:nth-child(3) i{color:var(--token-error);}
+.kanban-status span:nth-child(4) i{color:var(--token-dracula);}
+
+.kanban{
   display:grid;
   grid-template-columns:1fr;
-  gap:16px;
-  margin-top:48px;
+  gap:14px;
+  margin-top:18px;
 }
-@media (min-width:760px){
-  .tiers{grid-template-columns:repeat(3,1fr);gap:18px;}
-}
-.tier{
+@media (min-width:680px){ .kanban{grid-template-columns:repeat(2,1fr);} }
+@media (min-width:1080px){ .kanban{grid-template-columns:repeat(4,1fr);} }
+
+.kanban-col{
   background:var(--ide-panel);
   border:1px solid var(--ide-border);
   border-radius:12px;
-  padding:26px 22px 22px;
-  font-family:var(--font-mono);
-  transition:border-color .25s ease,transform .2s ease;
+  overflow:hidden;
   display:flex;
   flex-direction:column;
+  position:relative;
 }
-.tier:hover{
-  border-color:var(--token-dracula);
-  transform:translateY(-2px);
+.kanban-col::before{
+  content:'';
+  position:absolute;top:0;left:0;right:0;
+  height:2px;
+  background:var(--token-comment);
+  opacity:.45;
 }
-.tier.featured{
-  border-color:var(--token-keyword);
-  box-shadow:0 8px 26px rgba(204,120,50,.10);
-}
-.tier-head{
-  font-size:.68rem;
+.kanban-col.col-todo::before{background:var(--token-keyword);opacity:1;}
+.kanban-col.col-progress::before{background:var(--token-dracula);opacity:1;}
+.kanban-col.col-done::before{background:var(--token-string);opacity:1;}
+
+.kanban-col-head{
+  display:flex;align-items:center;justify-content:space-between;
+  gap:10px;
+  padding:11px 14px;
+  background:var(--ide-panel-2);
+  border-bottom:1px solid var(--ide-border);
+  font-family:var(--font-mono);
+  font-size:.72rem;
   text-transform:uppercase;
-  letter-spacing:.16em;
+  letter-spacing:.1em;
   color:var(--token-comment);
-  margin-bottom:10px;
 }
-.tier.featured .tier-head{color:var(--token-keyword);}
-.tier-name{
-  font-family:var(--font-sans);
-  font-size:1.2rem;
-  font-weight:700;
-  color:#FFFFFF;
-  margin-bottom:6px;
-  letter-spacing:-.01em;
-}
-.tier-sub{
-  font-size:.78rem;
+.kanban-col-head .count{
+  font-size:.7rem;
+  padding:1px 7px;
+  border:1px solid var(--ide-border);
+  border-radius:4px;
+  background:var(--ide-bg);
   color:var(--token-comment);
-  margin-bottom:20px;
-  padding-bottom:18px;
-  border-bottom:1px dashed var(--ide-border);
-  line-height:1.55;
+  letter-spacing:.04em;
 }
-.tier-list{
-  list-style:none;
-  padding:0;
-  margin:0 0 20px;
-  font-size:.82rem;
+.col-todo .kanban-col-head .count{color:var(--token-keyword);border-color:rgba(204,120,50,.32);}
+.col-progress .kanban-col-head .count{color:var(--token-dracula);border-color:rgba(255,121,198,.32);}
+.col-done .kanban-col-head .count{color:var(--token-string);border-color:rgba(106,135,89,.35);}
+
+.kanban-col-body{
+  padding:10px;
+  display:flex;
+  flex-direction:column;
+  gap:8px;
   flex-grow:1;
 }
-.tier-list li{
-  padding:6px 0 6px 18px;
-  position:relative;
-  color:var(--token-text);
+
+.kcard{
+  background:var(--ide-bg);
+  border:1px solid var(--ide-border);
+  border-radius:8px;
+  padding:10px 12px;
+  font-family:var(--font-mono);
+  font-size:.78rem;
+  transition:border-color .2s,transform .15s;
+}
+.kcard:hover{border-color:var(--token-dracula);transform:translateY(-1px);}
+
+.kcard-tag{
+  display:inline-flex;align-items:center;gap:5px;
+  font-size:.62rem;
+  font-weight:600;
+  letter-spacing:.06em;
+  padding:1px 7px;
+  border-radius:3px;
+  margin-bottom:6px;
+  background:rgba(255,255,255,.04);
+  color:var(--token-comment);
+  border:1px solid var(--ide-border);
+}
+.kcard-name{
+  font-family:var(--font-sans);
+  font-size:.86rem;
+  font-weight:600;
+  color:#fff;
+  line-height:1.3;
+  margin-bottom:4px;
+  letter-spacing:-.005em;
+}
+.kcard-desc{
+  font-size:.72rem;
+  color:var(--token-comment);
   line-height:1.5;
 }
-.tier-list li::before{
-  content:'›';
-  position:absolute;
-  left:0;
-  top:6px;
-  color:var(--token-keyword);
-  font-weight:700;
-  font-size:1rem;
+
+/* To Do cards */
+.col-todo .kcard-tag{color:var(--token-keyword);border-color:rgba(204,120,50,.35);background:rgba(204,120,50,.06);}
+
+/* In Progress card */
+.kcard.active{
+  border-color:rgba(255,121,198,.4);
+  background:rgba(255,121,198,.04);
+  box-shadow:0 0 0 1px rgba(255,121,198,.08) inset;
 }
-.tier.featured .tier-list li::before{color:var(--token-dracula);}
-.tier-price{
-  font-size:1.15rem;
-  font-weight:700;
-  color:#FFFFFF;
-  padding-top:18px;
-  border-top:1px solid var(--ide-border);
-  font-family:var(--font-sans);
-  letter-spacing:-.01em;
+.kcard.active .kcard-tag{color:var(--token-dracula);border-color:rgba(255,121,198,.4);background:rgba(255,121,198,.08);}
+.kcard.active .kcard-name{color:var(--token-dracula);}
+
+/* Done card */
+.kcard.done{
+  border-color:rgba(106,135,89,.4);
+  background:rgba(106,135,89,.05);
 }
-.tier-price small{
-  display:block;
+.kcard.done .kcard-tag{color:var(--token-string);border-color:rgba(106,135,89,.4);background:rgba(106,135,89,.1);}
+.kcard.done .kcard-name{color:var(--token-string);}
+.kcard.done .kcard-desc{color:var(--token-text);opacity:.92;}
+
+/* Locked (backlog) */
+.kcard.locked{opacity:.72;}
+.kcard.locked:hover{border-color:var(--token-error);opacity:.92;}
+.kcard.locked .kcard-tag{
+  color:var(--token-error);
+  border-color:rgba(255,85,85,.32);
+  background:rgba(255,85,85,.06);
+}
+
+/* Safe-net note under board */
+.kanban-footer{
+  margin-top:20px;
+  padding:13px 16px;
+  background:var(--ide-panel);
+  border:1px dashed var(--ide-border);
+  border-radius:10px;
   font-family:var(--font-mono);
-  font-size:.7rem;
+  font-size:.76rem;
   color:var(--token-comment);
-  font-weight:400;
-  margin-top:6px;
-  letter-spacing:.02em;
+  line-height:1.6;
+  display:flex;
+  align-items:flex-start;
+  gap:12px;
 }
+.kanban-footer i{color:var(--token-string);margin-top:2px;flex-shrink:0;font-size:.9em;}
+.kanban-footer strong{color:var(--token-string);font-weight:600;}
+
 @media (max-width:600px){
-  .tier{padding:22px 18px 18px;}
-  .tier-name{font-size:1.1rem;}
+  .kanban-status{font-size:.72rem;gap:8px 16px;padding:11px 14px;}
+  .kanban-col-head{font-size:.68rem;padding:10px 12px;}
+  .kcard{padding:9px 11px;}
+  .kcard-name{font-size:.82rem;}
+  .kcard-desc{font-size:.7rem;}
 }
 
 .mapping{display:grid;grid-template-columns:1fr;gap:14px;margin-top:28px;}
@@ -1132,80 +1213,147 @@ class MindDebugger {
     </div>
   </section>
 
-  <!-- ══════════ 06. Контракт ══════════ -->
+  <!-- ══════════ 06. Kanban манифест ══════════ -->
   <section>
     <div class="container">
-      <span class="snap-label">06 — контракт</span>
+      <span class="snap-label">06 — манифест сборки</span>
       <div class="section-head">
-        <h2>Контракт без мелкого шрифта</h2>
-        <p>Прямые условия, на которых я работаю. Без «звоните — обсудим», без продаж по телефону, без давления.</p>
+        <h2>Маршрут как kanban-доска</h2>
+        <p>Не «набор сессий», а сборка по модулям с явными критериями готовности. База — 6 модулей строго по порядку. Опции открываются только после M1–M5: без собранного дебаггера профильные протоколы не работают.</p>
       </div>
-      <div class="contract">
-        <div class="contract-row">
-          <span class="mark kw">→</span>
-          <span><strong>5..8 сессий.</strong> Не больше. Я не заинтересован держать вас в терапии годами — это не моя модель.</span>
+
+      <div class="kanban-status">
+        <span><i class="fas fa-coins"></i> 3 000 ₽ / 50 мин</span>
+        <span><i class="fas fa-cubes"></i> base: 6 modules</span>
+        <span><i class="fas fa-lock"></i> options: unlock after M1–M5</span>
+        <span><i class="fas fa-toolbox"></i> output: autonomous debugger</span>
+      </div>
+
+      <div class="kanban">
+        <!-- ═══ BACKLOG ═══ -->
+        <div class="kanban-col col-backlog">
+          <div class="kanban-col-head">
+            <span>backlog</span>
+            <span class="count">7</span>
+          </div>
+          <div class="kanban-col-body">
+            <article class="kcard locked">
+              <div class="kcard-tag"><i class="fas fa-lock"></i> M7</div>
+              <div class="kcard-name">Ценности и мотивация</div>
+              <div class="kcard-desc">Сильные стороны, поведение из ценностей.</div>
+            </article>
+            <article class="kcard locked">
+              <div class="kcard-tag"><i class="fas fa-lock"></i> M8</div>
+              <div class="kcard-name">Принятие и осознанность</div>
+              <div class="kcard-desc">Дефузия, третья волна КПТ (ACT / MBCT).</div>
+            </article>
+            <article class="kcard locked">
+              <div class="kcard-tag"><i class="fas fa-lock"></i> M9</div>
+              <div class="kcard-name">Тревога и паника</div>
+              <div class="kcard-desc">Иерархия страха, экспозиция, отказ от избегания.</div>
+            </article>
+            <article class="kcard locked">
+              <div class="kcard-tag"><i class="fas fa-lock"></i> M10</div>
+              <div class="kcard-name">Гнев и раздражение</div>
+              <div class="kcard-desc">Триггеры, регуляция в моменте, ассертивность.</div>
+            </article>
+            <article class="kcard locked">
+              <div class="kcard-tag"><i class="fas fa-lock"></i> M11</div>
+              <div class="kcard-name">Стыд и вина</div>
+              <div class="kcard-desc">Различение вины и стыда, работа с внутренним критиком.</div>
+            </article>
+            <article class="kcard locked">
+              <div class="kcard-tag"><i class="fas fa-lock"></i> M12</div>
+              <div class="kcard-name">Самооценка и самосострадание</div>
+              <div class="kcard-desc">Самопринятие, «ответ лучшему другу».</div>
+            </article>
+            <article class="kcard locked">
+              <div class="kcard-tag"><i class="fas fa-lock"></i> M13</div>
+              <div class="kcard-name">Отношения и ассертивность</div>
+              <div class="kcard-desc">Я-высказывания, границы без разрушения отношений.</div>
+            </article>
+          </div>
         </div>
-        <div class="contract-row">
-          <span class="mark kw">→</span>
-          <span><strong>Никаких пакетов вперёд.</strong> Оплата за конкретную встречу. Хотите остановиться на второй — останавливаетесь.</span>
+
+        <!-- ═══ TO DO ═══ -->
+        <div class="kanban-col col-todo">
+          <div class="kanban-col-head">
+            <span>to do</span>
+            <span class="count">5</span>
+          </div>
+          <div class="kanban-col-body">
+            <article class="kcard">
+              <div class="kcard-tag">M2</div>
+              <div class="kcard-name">Эмоции и мониторинг</div>
+              <div class="kcard-desc">Словарь эмоций, личные триггеры, дневник наблюдений.</div>
+            </article>
+            <article class="kcard">
+              <div class="kcard-tag">M3</div>
+              <div class="kcard-name">Детектор мыслей (СМЭР)</div>
+              <div class="kcard-desc">Автоматические мысли, «горячая мысль», факт vs интерпретация.</div>
+            </article>
+            <article class="kcard">
+              <div class="kcard-tag">M4</div>
+              <div class="kcard-name">Проверка на реальность</div>
+              <div class="kcard-desc">Искажения, доказательства за/против, альтернатива.</div>
+            </article>
+            <article class="kcard">
+              <div class="kcard-tag">M5</div>
+              <div class="kcard-name">Тест-драйв новых действий</div>
+              <div class="kcard-desc">Поведенческие эксперименты, экспозиция, шаги.</div>
+            </article>
+            <article class="kcard">
+              <div class="kcard-tag">M6</div>
+              <div class="kcard-name">Личный инструментарий</div>
+              <div class="kcard-desc">Аптечка техник, ранние признаки, план профилактики.</div>
+            </article>
+          </div>
         </div>
-        <div class="contract-row">
-          <span class="mark dracula">₽</span>
-          <span><strong>3 000 ₽ / 50 минут.</strong> Онлайн. Фиксированная цена, без «индивидуального подхода» в смысле «как договоримся».</span>
+
+        <!-- ═══ IN PROGRESS ═══ -->
+        <div class="kanban-col col-progress">
+          <div class="kanban-col-head">
+            <span>in progress</span>
+            <span class="count">1</span>
+          </div>
+          <div class="kanban-col-body">
+            <article class="kcard active">
+              <div class="kcard-tag"><i class="fas fa-circle-play"></i> M1 · ACTIVE</div>
+              <div class="kcard-name">Точка входа и карта</div>
+              <div class="kcard-desc">Когнитивная модель, измеримая цель, контракт. 1–2 сессии — и вскрываем следующий слой.</div>
+            </article>
+          </div>
         </div>
-        <div class="contract-row">
-          <span class="mark err">!</span>
-          <span><strong>Если баг не по моему профилю</strong> — скажу прямо на первой встрече и не буду тратить ваши деньги и время.</span>
-        </div>
-        <div class="contract-row">
-          <span class="mark">✓</span>
-          <span><strong>Вы уходите с инструментами.</strong> Не с подпиской. Не с зависимостью от терапевта. С работающими техниками самопомощи.</span>
+
+        <!-- ═══ DONE ═══ -->
+        <div class="kanban-col col-done">
+          <div class="kanban-col-head">
+            <span>done</span>
+            <span class="count">1</span>
+          </div>
+          <div class="kanban-col-body">
+            <article class="kcard done">
+              <div class="kcard-tag"><i class="fas fa-check"></i> DONE</div>
+              <div class="kcard-name">init_commit()</div>
+              <div class="kcard-desc">Больше не нужно уговаривать себя начать — ты уже начал. Открыл, прочитал, пришёл. Это и есть первый коммит в собственную прошивку.</div>
+            </article>
+          </div>
         </div>
       </div>
 
-      <p style="margin-top:48px;color:var(--token-comment);font-family:var(--font-mono);font-size:.82rem;line-height:1.65;max-width:760px;">
-        <span style="color:var(--token-dracula);">//</span> Три формата работы. Выбираете сами — от разовой диагностики до полного цикла. Универсального нет.
+      <div class="kanban-footer">
+        <i class="fas fa-shield-halved"></i>
+        <div>
+          <strong>M14 · Кризисная безопасность</strong> — отдельный контур, доступен всегда: до старта, в процессе, после завершения. Не «модуль», а страховка — ранние признаки, контакты, план выхода из кризиса. Прохождения базы не требует.
+        </div>
+      </div>
+
+      <p style="margin-top:26px;color:var(--token-comment);font-family:var(--font-mono);font-size:.82rem;line-height:1.65;max-width:760px;">
+        <span style="color:var(--token-dracula);">//</span> Специализированные ветки под запрос: выгорание, прокрастинация, страх запуска, синдром самозванца, карьерные развилки, профессиональная тревожность, перфекционизм, командные конфликты, work-life balance. Открываются после M1–M5.
       </p>
-
-      <div class="tiers">
-        <div class="tier">
-          <div class="tier-head">// entry</div>
-          <div class="tier-name">Diagnostic</div>
-          <div class="tier-sub">Одна сессия. Понять, что происходит, и нужна ли работа.</div>
-          <ul class="tier-list">
-            <li>Карта когнитивных сбоев</li>
-            <li>Локализация 1–2 главных узлов</li>
-            <li>Рекомендация: продолжать или нет</li>
-          </ul>
-          <div class="tier-price">3 000 ₽<small>за сессию · 50 мин</small></div>
-        </div>
-        <div class="tier featured">
-          <div class="tier-head">// standard</div>
-          <div class="tier-name">Refactor</div>
-          <div class="tier-sub">Пять сессий. Разобрать и перезаписать ключевые паттерны.</div>
-          <ul class="tier-list">
-            <li>Всё из Diagnostic</li>
-            <li>Разбор 2–3 ключевых установок</li>
-            <li>Протоколы самопомощи на руки</li>
-            <li>Финал — автономный дебаггер</li>
-          </ul>
-          <div class="tier-price">14 000 ₽<small>за цикл · 5 × 50 мин</small></div>
-        </div>
-        <div class="tier">
-          <div class="tier-head">// extended</div>
-          <div class="tier-name">Autonomy</div>
-          <div class="tier-sub">Восемь сессий. Полный цикл с поддержкой после.</div>
-          <ul class="tier-list">
-            <li>Всё из Refactor</li>
-            <li>+3 месяца поддержки в Telegram</li>
-            <li>Разбор кейсов по ходу жизни</li>
-          </ul>
-          <div class="tier-price">22 000 ₽<small>за цикл · 8 × 50 мин</small></div>
-        </div>
-      </div>
     </div>
   </section>
-
+  
   <!-- ══════════ 07. Рантайм ══════════ -->
   <section id="contact">
     <div class="container">
